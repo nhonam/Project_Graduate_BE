@@ -23,6 +23,12 @@ public class ProductService {
         return result;
     }
 
+    public int CreateProduct(String product_name,int stock_quantity,float price,String description,String image_url,String public_id,
+            int category_id,int id_environment,int id_supplier,int id_activity,int id_brand,String id_special_details) {
+        return iProductRepo.AddProduct(product_name,stock_quantity,price,description,image_url,public_id,
+        category_id,id_environment,id_supplier,id_activity,id_brand,id_special_details);
+    }
+
     public List<Product> bestSell() {
         return iProductRepo.bestSellProduct();
     }

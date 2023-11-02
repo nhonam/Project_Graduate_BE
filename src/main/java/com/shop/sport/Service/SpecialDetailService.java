@@ -7,6 +7,7 @@ import com.shop.sport.Repositories.ISpecialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +15,9 @@ import java.util.Optional;
 public class SpecialDetailService {
     @Autowired
     private ISpeciaDetaillRepository iSpeciaDetaillRepository;
+
+    @Autowired
+    private SpecialService specialService;
     public Boolean isExsitByName(String name) {
         if (iSpeciaDetaillRepository.isExsitSpecialDetail(name)==1)
             return true;
@@ -30,8 +34,18 @@ public class SpecialDetailService {
             return false;
         return true;
     }
-    public List<SpecialDetail> getAll() {
-        return (List<SpecialDetail>) iSpeciaDetaillRepository.findAll();
+    public List<SpecialDetail> getAllBySpecial(long idSpecial) {
+
+        List<SpecialDetail>  list = (List<SpecialDetail>) iSpeciaDetaillRepository.findAll();
+        List<SpecialDetail> listTmp = new ArrayList<SpecialDetail>();
+        for (SpecialDetail item:
+                list ) {
+            if (item.getSpecial().getId() == idSpecial) {
+                listTmp.add(item);
+            }
+        }
+
+        return listTmp;
     }
 
 
@@ -42,9 +56,10 @@ public class SpecialDetailService {
         return  brand.get();
 
     }
-    public SpecialDetail create(String name) {
+    public SpecialDetail create(String name, long idSpecial) {
         SpecialDetail brand = new SpecialDetail();
         brand.setSpecialDetailName(name);
+        brand.setSpecial(specialService.findById(idSpecial));
       return  iSpeciaDetaillRepository.save(brand);
 
     }

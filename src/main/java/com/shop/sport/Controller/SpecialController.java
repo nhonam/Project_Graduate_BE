@@ -2,8 +2,10 @@ package com.shop.sport.Controller;
 
 import com.shop.sport.Entity.Brand;
 import com.shop.sport.Entity.Special;
+import com.shop.sport.Entity.SpecialDetail;
 import com.shop.sport.Response.Response;
 import com.shop.sport.Service.BrandService;
+import com.shop.sport.Service.SpecialDetailService;
 import com.shop.sport.Service.SpecialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,19 +24,35 @@ public class SpecialController {
     @Autowired
     private SpecialService specialService;
 
+    @Autowired
+    private SpecialDetailService specialDetailService;
+
     
 
     @PostMapping("/specials")
     public ResponseEntity<Object> create(@RequestBody Map<String, String> body) {
         try {
-            String name = body.get("name");
-            if (specialService.isExsitByName(name))
+            String name_special = body.get("name_special");
+            if (specialService.isExsitByName(name_special))
                 return response.generateResponse("special is Exsit", HttpStatus.OK, null);
-            Special special = specialService.create(name);
+            Special special = specialService.create(name_special);
+            String name_special_detail_f = body.get("name_special_detail_f");
+            String name_special_detail_s = body.get("name_special_detail_s");
+            String name_special_detail_t = body.get("name_special_detail_t");
+            String name_special_detail_fo = body.get("name_special_detail_fo");
 
-            return response.generateResponse("special brand succesfully", HttpStatus.OK, special);
+            if (!name_special_detail_f.equalsIgnoreCase(""))
+                specialDetailService.create(name_special_detail_f,special.getId());
+            if (!name_special_detail_s.equalsIgnoreCase(""))
+                specialDetailService.create(name_special_detail_s,special.getId());
+            if (!name_special_detail_t.equalsIgnoreCase(""))
+                specialDetailService.create(name_special_detail_t,special.getId());
+            if (!name_special_detail_fo.equalsIgnoreCase(""))
+                specialDetailService.create(name_special_detail_fo,special.getId());
+
+            return response.generateResponse("special and special_detail succesfully", HttpStatus.OK, special);
         } catch (Exception e) {
-            return response.generateResponse("special brand fail" + e.getMessage(), HttpStatus.BAD_REQUEST, null);
+            return response.generateResponse("special and special_detail fail" + e.getMessage(), HttpStatus.BAD_REQUEST, null);
         }
 
     }

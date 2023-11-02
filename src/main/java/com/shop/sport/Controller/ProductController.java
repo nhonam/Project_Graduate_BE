@@ -106,34 +106,20 @@ public class ProductController {
             @RequestParam("id_supplier") long id_supplier,
             @RequestParam("id_activity") long id_activity,
             @RequestParam("id_brand") long id_brand,
+            @RequestParam("id_special_details") String id_special_details,
             @RequestParam(value = "image") MultipartFile multipartFile
 
     ) throws IOException {
         String public_id = "";
         try {
 
-            Product product = new Product();
-            product.setProductName(productName);
-            product.setStatus(true);
-            product.setStockQuantity(stockQuantity);
-            product.setPrice(price);
-            product.setDescription(description);
-            product.setCategory(categoryService.findById(id_category).get());
-            product.setEnvironment(environmentService.findById(id_environment));
-            product.setSupplier(supplierService.findById(id_supplier));
-            product.setActivity(activityService.findById(id_activity));
-            product.setBrand(brandService.findById(id_brand));
-
             Map<String, String> upload = fileUpload.uploadFile(multipartFile);
-
-            product.setImageUrl(upload.get("url"));
             public_id = upload.get("public_id");
-            product.setPublicId(public_id);
 
-//            product.setCategory(categoryService.searchCategoryById(id).get());
+            productService.CreateProduct(productName,stockQuantity,price,description,upload.get("url"),public_id,
+                    (int) id_category, (int) id_environment, (int) id_supplier, (int) id_activity, (int) id_brand,id_special_details);
 
-            product = productService.createProduct(product);
-            return response.generateResponse("create product Successfully", HttpStatus.OK, product);
+            return response.generateResponse("create product Successfully", HttpStatus.OK, "done");
 
         } catch (Exception e) {
             if (public_id!="")
@@ -170,6 +156,7 @@ public class ProductController {
         try {
 
             Product product = productService.getProductById(id).get();
+
 
             if (product == null)
                 return response.generateResponse("product not found", HttpStatus.BAD_REQUEST, null);
