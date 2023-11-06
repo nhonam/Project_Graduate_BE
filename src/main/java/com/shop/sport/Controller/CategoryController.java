@@ -1,6 +1,7 @@
 package com.shop.sport.Controller;
 
 import com.shop.sport.Entity.Category;
+import com.shop.sport.Entity.Special;
 import com.shop.sport.Response.Response;
 import com.shop.sport.Service.CategoryService;
 import com.shop.sport.Service.FileUpload;
@@ -68,7 +69,6 @@ public class CategoryController {
                     category.setPublicId(upload.get("public_id"));
                 }
 
-
                 return response.generateResponse("update category Successfully", HttpStatus.OK, category);
             }
 
@@ -78,23 +78,19 @@ public class CategoryController {
         }
 
     }
-
     @GetMapping("/{id}")
     public ResponseEntity<Object> searchCategoryById(
             @PathVariable("id") long id
     ) {
-
         try {
             Category category = categoryService.findById(id).get();
             if (category != null){
                 return response.generateResponse("find category Successfully", HttpStatus.OK, category);
             }
-
             return response.generateResponse("find category failed", HttpStatus.BAD_REQUEST, category);
         } catch (Exception e) {
             return response.generateResponse("find category failed"+e.getMessage(), HttpStatus.BAD_REQUEST, null);
         }
-
     }
 
 
@@ -127,13 +123,18 @@ public class CategoryController {
             String[] items = ids_special.split(",");
             // Now, the 'items' array contains individual items as strings
             for (String idSpecial : items) {
-                specialService.updateIdCategorySpecial( Long.parseLong(idSpecial),  category.getId());
+                try {
+                    specialService.updateIdCategorySpecial( Long.parseLong(idSpecial),  category.getId());
+                } catch (Exception e) {
+                    categoryService.delete(category.getId());
+                    fileUpload.deleteFile(public_id);
+                    return response.generateResponse("createCategory fail specilal is not exsit", HttpStatus.OK, null);
+                }
             }
 
             return response.generateResponse("createCategory Successfully", HttpStatus.OK, category);
         } catch (Exception e) {
             fileUpload.deleteFile(public_id);
-
             return response.generateResponse("createCategory fail"+e.getMessage(), HttpStatus.BAD_REQUEST, null);
         }
     }

@@ -22,6 +22,10 @@ public class CategoryService {
         return false;
     }
 
+    public void delete(long id) {
+        iCategoryRepository.deleteById(id);
+    }
+
     public List<Category> getAllCategory() {
         return (List<Category>) iCategoryRepository.findAll();
     }

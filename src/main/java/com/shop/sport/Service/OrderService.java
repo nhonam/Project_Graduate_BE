@@ -22,6 +22,11 @@ public class OrderService {
     private IOrderItem orderItemRepo;
 
 
+    public OrderItem findOrderItemByID(long id) {
+        return  orderItemRepo.findById(id).orElse(null);
+    }
+
+
     public Boolean insertOrder(long idUser, String adress, long idShipMethod, String phone, String name_reciver,
                             String productIds, String quantities ) {
             try {

@@ -55,7 +55,7 @@ public class AuthenticationService {
 
     public User register(RegisterRequest request) {
         User user = User.builder()
-                .avatarUrl("https://res.cloudinary.com/dzljztsyy/image/upload/v1690356797/shop_sport/avt%20default/images_emq5om.png")
+                .avatarUrl("https://res.cloudinary.com/dzljztsyy/image/upload/v1699149880/shop_sport/avatart%20default/avatar_vxzerq.jpg")
                 .status(true)
                 .username(request.getUsername())
                 .email(request.getEmail())

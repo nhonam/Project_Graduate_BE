@@ -1,5 +1,6 @@
 package com.shop.sport.Service;
 
+import com.shop.sport.DTO.SpecialDTO;
 import com.shop.sport.Entity.Product;
 import com.shop.sport.Repositories.IProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,27 +19,39 @@ public class ProductService {
         return iProductRepo.findAllProduct();
     }
 
+    public Product findProductById(long id) {
+        return iProductRepo.findById(id).get();
+    }
+
     public Long checkDelete(long id) {
         Long result = iProductRepo.check_delete_product(id);
         return result;
     }
 
     public int CreateProduct(String product_name,int stock_quantity,float price,String description,String image_url,String public_id,
-            int category_id,int id_environment,int id_supplier,int id_activity,int id_brand,String id_special_details) {
+            int category_id,int id_environment,int id_supplier,int id_activity,int id_brand,int id_unit,String id_special_details) {
         return iProductRepo.AddProduct(product_name,stock_quantity,price,description,image_url,public_id,
-        category_id,id_environment,id_supplier,id_activity,id_brand,id_special_details);
+        category_id,id_environment,id_supplier,id_activity,id_brand,id_unit,id_special_details);
     }
 
     public List<Product> bestSell() {
         return iProductRepo.bestSellProduct();
     }
 
+    public List<SpecialDTO> getSpecialDTO(long id) {
+        return iProductRepo.getProductByIDSP(id);
+    }
+
     public List<Product> getAllProductByCategory(String categoryName) {
         return iProductRepo.getAllProductByCategory(categoryName);
     }
 
-    public List<Product> searchProduct(String text) {
+    public List<Product> searchProductByText(String text) {
         return iProductRepo.searchProduct(text);
+    }
+
+    public int isExsitProduct(String text) {
+        return iProductRepo.is_exsit_product(text);
     }
 
     public Optional<Product> getProductById(long id) {

@@ -30,5 +30,12 @@ public class OrderItem {
     private Order1 order;
 
 
+    @JsonIgnore
+    @OneToOne(mappedBy = "orderItem", cascade = CascadeType.ALL)
+    private Evaluate evaluate;
+
+
+
+
 
 }

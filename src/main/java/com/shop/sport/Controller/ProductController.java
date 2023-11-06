@@ -1,6 +1,8 @@
 package com.shop.sport.Controller;
 
 import com.shop.sport.Entity.Product;
+import com.shop.sport.Entity.SpecialDetail;
+import com.shop.sport.Entity.SpecialSelected;
 import com.shop.sport.Response.Response;
 import com.shop.sport.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,15 +30,8 @@ public class ProductController {
     private ProductService productService;
 
     @Autowired
-    private CategoryService categoryService;
-    @Autowired
-    private EnvironmentService environmentService;
-    @Autowired
-    private SupplierService supplierService;
-    @Autowired
-    private ActivityService activityService;
-    @Autowired
-    private BrandService brandService;
+    private SpecialDetailService specialDetailService;
+
 
     @GetMapping("/allProduct")
     public ResponseEntity<Object> getAllProduct() {
@@ -85,7 +81,7 @@ public class ProductController {
             @RequestParam("text") String text
     ) {
         try {
-            List<Product> list = productService.searchProduct(text);
+            List<Product> list = productService.searchProductByText(text);
 
             return response.generateResponse("getProductbyCategory Successfully", HttpStatus.OK, list);
 
@@ -106,23 +102,29 @@ public class ProductController {
             @RequestParam("id_supplier") long id_supplier,
             @RequestParam("id_activity") long id_activity,
             @RequestParam("id_brand") long id_brand,
+            @RequestParam("id_unit") long id_unit,
             @RequestParam("id_special_details") String id_special_details,
             @RequestParam(value = "image") MultipartFile multipartFile
 
     ) throws IOException {
         String public_id = "";
         try {
+            if (productService.isExsitProduct(productName) == 1) {
+                return response.generateResponse(" product is exsit", HttpStatus.OK, "done");
+            }
 
             Map<String, String> upload = fileUpload.uploadFile(multipartFile);
             public_id = upload.get("public_id");
 
-            productService.CreateProduct(productName,stockQuantity,price,description,upload.get("url"),public_id,
-                    (int) id_category, (int) id_environment, (int) id_supplier, (int) id_activity, (int) id_brand,id_special_details);
+            if (productService.CreateProduct(productName, stockQuantity, price, description, upload.get("url"), public_id,
+                    (int) id_category, (int) id_environment, (int) id_supplier, (int) id_activity, (int) id_brand, (int) id_unit,id_special_details) ==1)
+                return response.generateResponse("create product Successfully", HttpStatus.OK, "done");
 
-            return response.generateResponse("create product Successfully", HttpStatus.OK, "done");
+            fileUpload.deleteFile(public_id);
+            return response.generateResponse("create product failed (producer return fail) ProductController", HttpStatus.OK, null);
 
         } catch (Exception e) {
-            if (public_id!="")
+            if (public_id != "")
                 fileUpload.deleteFile(public_id);
             return response.generateResponse("create product failed ProductController" + e.getMessage(), HttpStatus.BAD_REQUEST, null);
 
@@ -130,9 +132,9 @@ public class ProductController {
 
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/one/{id}")
     public ResponseEntity<Object> getProductByid(
-            @PathVariable long id
+            @PathVariable("id") long id
     ) {
 
         try {
@@ -140,7 +142,14 @@ public class ProductController {
             if (product == null)
                 return response.generateResponse("product not found", HttpStatus.BAD_REQUEST, null);
 
-            return response.generateResponse(" product successfully", HttpStatus.OK, product);
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("product", product);
+            data.put("special", productService.getSpecialDTO(product.getId()));
+
+
+
+                   return response.generateResponse(" product successfully", HttpStatus.OK, data);
 
         } catch (Exception e) {
             return response.generateResponse(" product failed", HttpStatus.OK, null);
@@ -161,8 +170,8 @@ public class ProductController {
             if (product == null)
                 return response.generateResponse("product not found", HttpStatus.BAD_REQUEST, null);
 
-            long isDel =productService.checkDelete(id);
-            if (isDel==1) {
+            long isDel = productService.checkDelete(id);
+            if (isDel == 1) {
                 product.setStatus(false);
 //            fileUpload.deleteFile(product.getPublicId());
                 productService.createProduct(product);
@@ -171,7 +180,7 @@ public class ProductController {
             return response.generateResponse("product exist in cart or order !!! delete failer", HttpStatus.OK, null);
 
         } catch (Exception e) {
-            return response.generateResponse("delete product failed"+e.getMessage(), HttpStatus.OK, null);
+            return response.generateResponse("delete product failed" + e.getMessage(), HttpStatus.OK, null);
 
         }
     }
@@ -220,7 +229,7 @@ public class ProductController {
             if (!productName.isEmpty()) {
                 product.setProductName(productName);
             }
-            if (multipartFile!=null) {
+            if (multipartFile != null) {
 
                 fileUpload.deleteFile(product.getPublicId());
 
@@ -230,7 +239,7 @@ public class ProductController {
                 product.setPublicId(upload.get("public_id"));
             }
 
-            System.out.println(product.getCategory().getId() +" nânnnaa");
+            System.out.println(product.getCategory().getId() + " nânnnaa");
 
 
             product = productService.createProduct(product);

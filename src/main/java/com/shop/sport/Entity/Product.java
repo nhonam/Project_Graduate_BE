@@ -64,6 +64,10 @@ public class Product {
     @JsonIgnore
     private Collection<ProductRelation> productRelationCurrent;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Collection<Evaluate> evaluates;
+
     @ManyToOne
 //    @JsonIgnore
     @JoinColumn(name = "id_category") // // thông qua khóa ngoại id
@@ -87,6 +91,10 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "id_brand") // // thông qua khóa ngoại id
     private Brand brand;
+
+    @ManyToOne
+    @JoinColumn(name = "id_unit") // // thông qua khóa ngoại id
+    private Unit unit;
 
 
 

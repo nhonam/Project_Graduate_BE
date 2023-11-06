@@ -38,6 +38,12 @@ public class User implements UserDetails {
   @JoinColumn(name = "id_role") // // thông qua khóa ngoại id
   private Role role;
 
+
+
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+  @JsonIgnore
+  private Collection<Evaluate> evaluates;
+
   @Column(name = "avatar_url")
   private String avatarUrl;
 

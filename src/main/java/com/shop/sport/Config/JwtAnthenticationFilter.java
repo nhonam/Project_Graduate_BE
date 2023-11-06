@@ -1,5 +1,6 @@
 package com.shop.sport.Config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shop.sport.Service.JwtService;
 import com.shop.sport.auth.JwtAuthenticationEntryPoint;
 import jakarta.servlet.FilterChain;
@@ -8,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -38,52 +41,148 @@ public class JwtAnthenticationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
         if (request.getServletPath().contains("/api/v1/auth") ||
-                request.getServletPath().contains("/api/v1/product")||
-                request.getServletPath().contains("/api/v1/test")
-        ||request.getServletPath().contains("product/add") ||
-        request.getServletPath().contains("forget-password") ||
+                request.getServletPath().contains("/api/v1/product/allProduct") ||
+                request.getServletPath().contains("api/v1/product/one/") ||
+                request.getServletPath().contains("/api/v1/test") ||
+                request.getServletPath().contains("forget-password") ||
                 request.getServletPath().contains("/update")) {
-            filterChain.doFilter(request, response);
+            try {
+                filterChain.doFilter(request, response);
+            } catch (Exception e) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+                // Set the content type to JSON
+                response.setContentType("application/json");
+
+                // Create the response body
+                String jsonResponse = "{\"message\": \"Unauthorized - Invalid JWT\", \"code\": 401, \"data\": null}";
+
+                // Write the response body
+                response.getWriter().write(jsonResponse);
+
+                // Since the response is complete, do not call filterChain.doFilter
+//            filterChain.doFilter(request, response);
+                return;
+
+                // Since the response is complete, do not call filterChain.doFilter
+//            filterChain.doFilter(request, response);
+
+            }
+
             return;
         }
 
         final String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+            // Set the content type to JSON
+            response.setContentType("application/json");
+
+            // Create the response body
+            String jsonResponse = "{\"message\": \"Unauthorized - Invalid JWT\", \"code\": 401, \"data\": null}";
+
+            // Write the response body
+            response.getWriter().write(jsonResponse);
+
+            // Since the response is complete, do not call filterChain.doFilter
+//            filterChain.doFilter(request, response);
             return;
         }
 
         String jwt = authHeader.substring(7);
         String userEmail = null;
         try {
-             userEmail = jwtService.extractUsername(jwt);
-        }catch (Exception E){
-            authenticationEntryPoint.commence(request, response, new BadCredentialsException("Invalid JWT"));
+            userEmail = jwtService.extractUsername(jwt);
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+            // Set the content type to JSON
+            response.setContentType("application/json");
+
+            // Create the response body
+            String errorMessage = String.format("ERROR: %s", e.getMessage());
+            errorMessage = errorMessage.replace("\"", "\\\""); // Escape double quotes for JSON
+
+            // Create the response body with the error message included
+            String jsonResponse = String.format("{\"message\": \"%s\", \"code\": 401, \"data\": null}", errorMessage);
+
+            // Write the response body
+
+            // Write the response body
+            response.getWriter().write(jsonResponse);
+
+//            authenticationEntryPoint.commence(request, response, new BadCredentialsException("Invalid JWT"));
             return;
         }
 
 
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
 
-            if (jwtService.isTokenValid(jwt, userDetails)) {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()
-                );
-                authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-            } else {
-                // Handle authentication failure with the AuthenticationEntryPoint
-                authenticationEntryPoint.commence(request, response, new BadCredentialsException("Invalid JWT"));
+            try {
+                UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+                if (jwtService.isTokenValid(jwt, userDetails)) {
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null,
+                            userDetails.getAuthorities()
+                    );
+                    authToken.setDetails(
+                            new WebAuthenticationDetailsSource().buildDetails(request)
+                    );
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                } else {
+                    // Handle authentication failure with the AuthenticationEntryPoint
+                    authenticationEntryPoint.commence(request, response, new BadCredentialsException("Invalid JWT"));
+                    return;
+                }
+            } catch (Exception e) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+                // Set the content type to JSON
+                response.setContentType("application/json");
+
+                // Create the response body
+                String errorMessage = String.format("ERROR: %s", e.getMessage());
+                errorMessage = errorMessage.replace("\"", "\\\""); // Escape double quotes for JSON
+
+                // Create the response body with the error message included
+                String jsonResponse = String.format("{\"message\": \"%s\", \"code\": 401, \"data\": null}", errorMessage);
+
+                // Write the response body
+
+                // Write the response body
+                response.getWriter().write(jsonResponse);
                 return;
+
             }
+
         }
 
-        filterChain.doFilter(request, response);
+        try {
+            filterChain.doFilter(request, response);
+            return;
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+            // Set the content type to JSON
+            response.setContentType("application/json");
+
+            // Create the response body
+            String errorMessage = String.format("ERROR: %s", e.getMessage());
+            errorMessage = errorMessage.replace("\"", "\\\""); // Escape double quotes for JSON
+
+            // Create the response body with the error message included
+            String jsonResponse = String.format("{\"message\": \"%s\", \"code\": 401, \"data\": null}", errorMessage);
+
+            // Write the response body
+
+            // Write the response body
+            response.getWriter().write(jsonResponse);
+            return;
+        }
+
     }
+
 }

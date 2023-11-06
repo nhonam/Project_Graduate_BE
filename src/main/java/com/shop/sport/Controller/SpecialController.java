@@ -1,10 +1,12 @@
 package com.shop.sport.Controller;
 
 import com.shop.sport.Entity.Brand;
+import com.shop.sport.Entity.Category;
 import com.shop.sport.Entity.Special;
 import com.shop.sport.Entity.SpecialDetail;
 import com.shop.sport.Response.Response;
 import com.shop.sport.Service.BrandService;
+import com.shop.sport.Service.CategoryService;
 import com.shop.sport.Service.SpecialDetailService;
 import com.shop.sport.Service.SpecialService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class SpecialController {
 
     @Autowired
     private SpecialService specialService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @Autowired
     private SpecialDetailService specialDetailService;
@@ -66,6 +71,22 @@ public class SpecialController {
             return response.generateResponse("Get All special Successfully", HttpStatus.OK, specials);
         } catch (Exception e) {
             return response.generateResponse("Get All special fail" + e.getMessage(), HttpStatus.BAD_REQUEST, null);
+        }
+
+    }
+
+    @GetMapping("/specials-by-category/{id}")
+    public ResponseEntity<Object> getSpecialsByIdCategory(
+            @PathVariable("id") long id
+    ) {
+
+        try {
+
+            Category category = categoryService.findById(id).get();
+
+            return response.generateResponse("Get All special by id category Successfully", HttpStatus.OK, category.getSpecials().toArray());
+        } catch (Exception e) {
+            return response.generateResponse("Get All special by id category fail" + e.getMessage(), HttpStatus.BAD_REQUEST, null);
         }
 
     }
