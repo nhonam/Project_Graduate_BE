@@ -53,11 +53,11 @@ public interface OrderReopository extends JpaRepository<Order1, Long> {
                        @Param("id_order") long idOder,
                        @Param("id_payment_method") long idPaymentMothod);
 
-    @Query("SELECT o FROM Order1 o LEFT JOIN OrderPayment op ON o.id = op.order.id WHERE op.order IS NULL")
-    List<Order1> findOrdersWithoutPayment();
-
-    @Query("SELECT o FROM Order1 o JOIN OrderPayment op ON o.id = op.order.id")
-    List<Order1> findOrdersPayment();
+//    @Query("SELECT o FROM Order1 o LEFT JOIN OrderPayment op ON o.id = op.order.id WHERE op.order IS NULL")
+//    List<Order1> findOrdersWithoutPayment();
+//
+//    @Query("SELECT o FROM Order1 o JOIN OrderPayment op ON o.id = op.order.id")
+//    List<Order1> findOrdersPayment();
 
 
 }

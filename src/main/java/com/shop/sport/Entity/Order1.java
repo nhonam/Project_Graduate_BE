@@ -18,12 +18,12 @@ public class Order1 {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(name = "payment_date")
+    private Date paymentDate;
 
     @Column(name = "order_date")
     private Date orderDate;
 
-    @Column(name = "total_amount")
-    private Float totalAmount;
 
     @Column(name = "shipping_date")
     private Date shippingDate;
@@ -37,8 +37,6 @@ public class Order1 {
     @Column(name = "name_reciver")
     private String name_reciver;
 
-
-
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "id_User") // // thông qua khóa ngoại id
@@ -50,18 +48,18 @@ public class Order1 {
     @JoinColumn(name = "id_order_status") // // thông qua khóa ngoại id
     private OrderStatus orderStatus;
 
-    @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "id_shipping_method") // // thông qua khóa ngoại id
-    private ShippingMethod shippingMethod;
+//    @ManyToOne
+//    @JsonIgnore
+//    @JoinColumn(name = "id_shipping_method") // // thông qua khóa ngoại id
+//    private ShippingMethod shippingMethod;
 
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     @JsonIgnore
     private Collection<OrderItem> orderItems;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private Collection<OrderPayment> orderPayments;
+//    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+//    @JsonIgnore
+//    private Collection<OrderPayment> orderPayments;
 
 }

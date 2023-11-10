@@ -149,33 +149,33 @@ public class OrderController {
     }
 
 
-    @GetMapping ("/wait-confirm")
-    public ResponseEntity<Object> DonHangChoXacNhan() {
-        try {
+//    @GetMapping ("/wait-confirm")
+//    public ResponseEntity<Object> DonHangChoXacNhan() {
+//        try {
+//
+//            List<Order1> list = orderService.listOrderWaitConfirm();
+//
+//            return response.generateResponse("get list order wait confirm", HttpStatus.OK, list);
+//
+//        }catch (Exception e) {
+//            return response.generateResponse("get list order wait confirm failed"+e.getMessage(), HttpStatus.BAD_REQUEST, null);
+//
+//        }
+//    }
 
-            List<Order1> list = orderService.listOrderWaitConfirm();
-
-            return response.generateResponse("get list order wait confirm", HttpStatus.OK, list);
-
-        }catch (Exception e) {
-            return response.generateResponse("get list order wait confirm failed"+e.getMessage(), HttpStatus.BAD_REQUEST, null);
-
-        }
-    }
-
-    @GetMapping ("/done-confirm")
-    public ResponseEntity<Object> DonHangDaXacNhan() {
-        try {
-
-            List<Order1> list = orderService.listOrderConfirmed();
-
-            return response.generateResponse("get list order wait confirm", HttpStatus.OK, list);
-
-        }catch (Exception e) {
-            return response.generateResponse("get list order wait confirm failed"+e.getMessage(), HttpStatus.BAD_REQUEST, null);
-
-        }
-    }
+//    @GetMapping ("/done-confirm")
+//    public ResponseEntity<Object> DonHangDaXacNhan() {
+//        try {
+//
+//            List<Order1> list = orderService.listOrderConfirmed();
+//
+//            return response.generateResponse("get list order wait confirm", HttpStatus.OK, list);
+//
+//        }catch (Exception e) {
+//            return response.generateResponse("get list order wait confirm failed"+e.getMessage(), HttpStatus.BAD_REQUEST, null);
+//
+//        }
+//    }
 
 
     @PostMapping("/confirm")

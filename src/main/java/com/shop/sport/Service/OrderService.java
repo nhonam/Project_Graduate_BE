@@ -77,15 +77,15 @@ public class OrderService {
 
     }
 
-    public List<Order1> listOrderWaitConfirm() {
-        return orderReopository.findOrdersWithoutPayment();
-
-    }
-
-    public List<Order1> listOrderConfirmed() {
-        return orderReopository.findOrdersPayment();
-
-    }
+//    public List<Order1> listOrderWaitConfirm() {
+//        return orderReopository.findOrdersWithoutPayment();
+//
+//    }
+//
+//    public List<Order1> listOrderConfirmed() {
+//        return orderReopository.findOrdersPayment();
+//
+//    }
 
     public Long total_order(long idOrder) {
         return orderReopository.total_order(idOrder);

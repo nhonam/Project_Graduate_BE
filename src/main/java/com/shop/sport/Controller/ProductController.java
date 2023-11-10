@@ -1,14 +1,13 @@
 package com.shop.sport.Controller;
 
 import com.shop.sport.Entity.Product;
-import com.shop.sport.Entity.SpecialDetail;
-import com.shop.sport.Entity.SpecialSelected;
 import com.shop.sport.Response.Response;
-import com.shop.sport.Service.*;
+import com.shop.sport.Service.FileUpload;
+import com.shop.sport.Service.ProductService;
+import com.shop.sport.Service.SpecialDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,12 +19,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/product")
 public class ProductController {
-
     Response response = Response.getInstance();
-
     @Autowired
     private FileUpload fileUpload;
-
     @Autowired
     private ProductService productService;
 
@@ -136,13 +132,10 @@ public class ProductController {
     public ResponseEntity<Object> getProductByid(
             @PathVariable("id") long id
     ) {
-
         try {
             Product product = productService.getProductById(id).get();
             if (product == null)
                 return response.generateResponse("product not found", HttpStatus.BAD_REQUEST, null);
-
-
             Map<String, Object> data = new HashMap<>();
             data.put("product", product);
             data.put("special", productService.getSpecialDTO(product.getId()));

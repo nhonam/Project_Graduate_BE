@@ -19,6 +19,9 @@ public class OrderItem {
     @Column(name = "quantity")
     private long productId;
 
+    @Column(name = "price")
+    private float price;
+
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "id_product") // // thông qua khóa ngoại id
