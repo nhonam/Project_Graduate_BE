@@ -70,28 +70,27 @@ public class CartController {
 //    }
 
 
-//    @PostMapping("/carts")
-//    public ResponseEntity<Object> addToCart(   @RequestBody Map<String, Long> body) {
-//
-//        try {
-//            long idUser = body.get("idUser");
-//            long idProduct = body.get("idProduct");
-//            long quantity = body.get("quantity");
-//            System.out.println(idUser);
-//            Boolean addCart = cartService.addtoCart1(idUser,idProduct,quantity);
-//            if (addCart){
-//                return response.generateResponse("Add to Cart Successfully", HttpStatus.OK, addCart);
-//
-//            }else {
-//                return response.generateResponse("Add to Cart fail", HttpStatus.BAD_REQUEST, addCart);
-//
-//            }
-//
-//        } catch (Exception e) {
-//            return response.generateResponse("Add to Cart fail"+e.getMessage(), HttpStatus.BAD_REQUEST, null);
-//        }
-//
-//
-//    }
+    @PostMapping("/carts")
+    public ResponseEntity<Object> addToCart(   @RequestBody Map<String, Long> body) {
+
+        try {
+            long idUser = body.get("idUser");
+            long idProduct = body.get("idProduct");
+            long quantity = body.get("quantity");
+            int addCart = cartService.add_to_cart(idProduct,quantity,idUser);
+            if (addCart== 1){
+                return response.generateResponse("Add to Cart Successfully", HttpStatus.OK, addCart);
+
+            }else {
+                return response.generateResponse("Add to Cart fail", HttpStatus.BAD_REQUEST, addCart);
+
+            }
+
+        } catch (Exception e) {
+            return response.generateResponse("Add to Cart fail"+e.getMessage(), HttpStatus.BAD_REQUEST, null);
+        }
+
+
+    }
 
 }

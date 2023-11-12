@@ -38,7 +38,8 @@ public class SecurityConfiguration {
         http
                 .authorizeRequests()
                 .requestMatchers("/api/v1/auth/*","/swagger-ui/**","/v3/api-docs","/api/v1/user/update/**","/api/v1/product/update/*"
-                        ,"/api/v1/user/forget-password/*", "/api/v1/product/**","/api/v1/product/delete/**","/api/v1/test/*")
+                        ,"/api/v1/user/forget-password/*", "/api/v1/product/**","/api/v1/product/delete/**","/api/v1/test/*",
+                        "/api/v1/category/getAllCategory","api/v1/product/byCategory")
                 .permitAll()
                 .anyRequest()
                 .authenticated();

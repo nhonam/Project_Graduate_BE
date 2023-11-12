@@ -13,11 +13,16 @@ import java.util.List;
 public class CartService {
 
     @Autowired
-    private ICartItemRepository getCart_by_iduser;
+    private ICartItemRepository iCartItemRepository;
     @Async
     public List<CartDTO> getAllCartByUser(long idUser) {
+      return  iCartItemRepository.getCart_by_iduser(idUser);
 
-      return  getCart_by_iduser.getCart_by_iduser(idUser);
+    }
+
+    @Async
+    public int add_to_cart(long id_product,long quantity,long id_user) {
+        return  iCartItemRepository.add_to_cart(id_product,quantity,id_user);
 
     }
 }

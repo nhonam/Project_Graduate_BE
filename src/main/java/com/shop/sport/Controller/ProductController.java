@@ -117,7 +117,7 @@ public class ProductController {
                 return response.generateResponse("create product Successfully", HttpStatus.OK, "done");
 
             fileUpload.deleteFile(public_id);
-            return response.generateResponse("create product failed (producer return fail) ProductController", HttpStatus.OK, null);
+            return response.generateResponse("create product failed (producer return fail) ProductController", HttpStatus.BAD_REQUEST, null);
 
         } catch (Exception e) {
             if (public_id != "")
@@ -231,8 +231,6 @@ public class ProductController {
                 product.setImageUrl(upload.get("url"));
                 product.setPublicId(upload.get("public_id"));
             }
-
-            System.out.println(product.getCategory().getId() + " nânnnaa");
 
 
             product = productService.createProduct(product);
