@@ -6,23 +6,31 @@ import com.shop.sport.DTO.OrderDTO;
 import com.shop.sport.Entity.Order1;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.jpa.repository.query.Procedure;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+@EnableJpaRepositories
+public interface OrderReopository extends CrudRepository<Order1, Long> {
 
-public interface OrderReopository extends JpaRepository<Order1, Long> {
-
-    @Procedure(name = "insert_to_order_order_item")
-    void insert_to_order_order_item(@Param("shipping_adress") String shipping_adress,
-                         @Param("id_user") long id_user,
-                         @Param("phone") String phone,
-                         @Param("name_reciver") String name_reciver,
-                         @Param("productIds") String productIds,
-                         @Param("quantities") String quantities);
+//    @Query(value = "CALL insert_to_order_order_item(:shipping_adress,:id_user,:phone,:ngnhan,:productIds,:quantities);", nativeQuery = true)
+//    int insert_to_order_order_item(@Param("shipping_adress") String shipping_adress,
+//                         @Param("id_user") long id_user,
+//                         @Param("phone") String phone,
+//                         @Param("name_reciver") String name_reciver,
+//                         @Param("productIds") String productIds,
+//                         @Param("quantities") String quantities);
 //    @Procedure(name = "getOrder_byIdUser")
 //    List<OrderDTO> getOrder_byIdUser(@Param("id_user") long id_user);
-
+@Query(value = "CALL insert_to_order_order_item(:shipping_adress,:id_user,:phone,:ngnhan,:productIds,:quantities);", nativeQuery = true)
+int insert_to_order_order_item(@Param("shipping_adress") String shipping_adress,
+                         @Param("id_user") long id_user,
+                         @Param("phone") String phone,
+                         @Param("ngnhan") String ngnhan,
+                         @Param("productIds") String productIds,
+                         @Param("quantities") String quantities);
     @Query(value = "CALL getOrder_byIdUser(:id_User)", nativeQuery = true)
     List<OrderDTO> getOrder_byIdUser(@Param("id_User") long id_User);
 

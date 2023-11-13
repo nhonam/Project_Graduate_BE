@@ -27,13 +27,13 @@ public class OrderService {
     }
 
 
-    public Boolean insertOrder(long idUser, String adress, String phone, String name_reciver,
+    public int insertOrder(long idUser, String adress, String phone, String name_reciver,
                             String productIds, String quantities ) {
             try {
-                orderReopository.insert_to_order_order_item(adress,idUser,phone,name_reciver, productIds, quantities);
-                return true;
+               return orderReopository.insert_to_order_order_item(adress,idUser,phone,name_reciver, productIds, quantities);
+
             }catch (Exception e) {
-                return false;
+                return 0;
             }
 
     }

@@ -43,11 +43,14 @@ public class OrderController {
 
         try {
             long idUser = Long.parseLong(body.get("id_user"));
-             orderService.insertOrder(idUser,
+          int result =   orderService.insertOrder(idUser,
                     body.get("adress"), body.get("phone"), body.get("ten_ng_nhan"),
                      body.get("idProducts"),body.get("idQuantities"));
 
-            return response.generateResponse("Buy product Successfully", HttpStatus.OK, true);
+          if (result==1)
+                return response.generateResponse("Buy product Successfully", HttpStatus.OK, true);
+          return response.generateResponse("Buy product fail producer return 0 -> fail transaction", HttpStatus.BAD_REQUEST, null);
+
 
         }catch (Exception e) {
             return response.generateResponse("Buy product fail"+e.getMessage(), HttpStatus.BAD_REQUEST, null);
