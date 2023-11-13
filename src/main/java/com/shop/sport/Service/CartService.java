@@ -20,6 +20,17 @@ public class CartService {
 
     }
 
+    public Boolean delete(long idcart) {
+        try {
+            iCartItemRepository.deleteById(idcart);
+            return true;
+
+        }catch (Exception e) {
+            return false;
+        }
+
+    }
+
     @Async
     public int add_to_cart(long id_product,long quantity,long id_user) {
         return  iCartItemRepository.add_to_cart(id_product,quantity,id_user);

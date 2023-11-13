@@ -35,21 +35,21 @@ public class CartController {
 
     }
 
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Object> deleteTOCart(@PathVariable("id") long id) {
-//        try {
-//
-//          Boolean deleteCartItem =  cartService.deleteCartItem(id);
-//          if (deleteCartItem)
-//            return response.generateResponse("delete item in cart successfully", HttpStatus.OK, deleteCartItem);
-//            return response.generateResponse("delete item in cart failed", HttpStatus.BAD_REQUEST, null);
-//
-//        }catch (Exception e) {
-//            return response.generateResponse("delete item in cart failed"+e.getMessage(), HttpStatus.BAD_REQUEST, null);
-//
-//
-//        }
-//    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteTOCart(@PathVariable("id") long id) {
+        try {
+
+          Boolean deleteCartItem =  cartService.delete(id);
+          if (deleteCartItem)
+            return response.generateResponse("delete item in cart successfully", HttpStatus.OK, true);
+            return response.generateResponse("delete item in cart failed", HttpStatus.BAD_REQUEST, false);
+
+        }catch (Exception e) {
+            return response.generateResponse("delete item in cart failed"+e.getMessage(), HttpStatus.BAD_REQUEST, null);
+
+
+        }
+    }
 
 //    @PostMapping("/{id}")
 //    public ResponseEntity<Object> updateCart(@PathVariable("id") long id) {

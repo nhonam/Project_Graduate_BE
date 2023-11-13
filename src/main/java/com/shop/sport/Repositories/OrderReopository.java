@@ -16,7 +16,6 @@ public interface OrderReopository extends JpaRepository<Order1, Long> {
     @Procedure(name = "insert_to_order_order_item")
     void insert_to_order_order_item(@Param("shipping_adress") String shipping_adress,
                          @Param("id_user") long id_user,
-                         @Param("id_shipping_method") long id_shipping_method,
                          @Param("phone") String phone,
                          @Param("name_reciver") String name_reciver,
                          @Param("productIds") String productIds,

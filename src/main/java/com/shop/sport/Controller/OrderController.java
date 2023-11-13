@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -40,12 +41,10 @@ public class OrderController {
     @PostMapping("/buy")
     public ResponseEntity<Object> BuyProducts(@RequestBody Map<String, String> body) {
 
-
         try {
             long idUser = Long.parseLong(body.get("id_user"));
-            long idShipMethod = Long.parseLong(body.get("id_ship_method"));
              orderService.insertOrder(idUser,
-                    body.get("adress"),idShipMethod, body.get("phone"), body.get("ten_ng_nhan"),
+                    body.get("adress"), body.get("phone"), body.get("ten_ng_nhan"),
                      body.get("idProducts"),body.get("idQuantities"));
 
             return response.generateResponse("Buy product Successfully", HttpStatus.OK, true);
@@ -65,6 +64,51 @@ public class OrderController {
 
         }catch (Exception e) {
             return response.generateResponse("Buy product fail"+e.getMessage(), HttpStatus.BAD_REQUEST, null);
+
+        }
+    }
+    // lấy những sản phẩm đã mua ( đã thanh toán hoặc shop đã xác nhận)
+    @GetMapping ("boughts/{id}")
+    public ResponseEntity<Object> getOrderBougth(@PathVariable("id") long iduser) {
+        try {
+
+            List<OrderDTO> list = orderService.getOrder_byIdUser(iduser);
+            List<OrderDTO> listResult = new ArrayList<>();
+            for (OrderDTO item : list
+            ) {
+
+                if (item.getid_order_status()==2){
+                    listResult.add(item);
+                }
+
+            }
+            return response.generateResponse("get list order item Successfully", HttpStatus.OK, listResult);
+
+        }catch (Exception e) {
+            return response.generateResponse("get list order item failed"+e.getMessage(), HttpStatus.OK, 0 );
+
+        }
+    }
+
+    // lấy những sản phẩm chờ shop xác nhận
+    @GetMapping ("wait-confirm/{id}")
+    public ResponseEntity<Object> getOrderWaitConfirm(@PathVariable("id") long iduser) {
+        try {
+
+            List<OrderDTO> list = orderService.getOrder_byIdUser(iduser);
+            List<OrderDTO> listResult = new ArrayList<>();
+            for (OrderDTO item : list
+                 ) {
+
+                if (item.getid_order_status()==1){
+                    listResult.add(item);
+                }
+
+            }
+            return response.generateResponse("get list order item Successfully", HttpStatus.OK, listResult);
+
+        }catch (Exception e) {
+            return response.generateResponse("get list order item failed"+e.getMessage(), HttpStatus.OK, 0 );
 
         }
     }
