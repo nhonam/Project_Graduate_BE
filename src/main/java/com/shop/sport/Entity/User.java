@@ -32,8 +32,6 @@ public class User implements UserDetails {
   private String phone;
 
 
-
-
   @ManyToOne
   @JoinColumn(name = "id_role") // // thông qua khóa ngoại id
   private Role role;

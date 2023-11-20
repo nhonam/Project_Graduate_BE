@@ -47,6 +47,11 @@ public class OrderService {
 
     }
 
+    public List<OrderDTO> getOrder_byIdUserNotValuate(long idUser) {
+        return orderReopository.getOrder_byIdUser_evaluate(idUser);
+
+    }
+
     public List<BestSell> best_sell_month(int thang, int nam) {
         return orderReopository.best_sell_month(thang, nam);
 

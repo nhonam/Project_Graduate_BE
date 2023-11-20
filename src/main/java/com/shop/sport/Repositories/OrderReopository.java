@@ -38,6 +38,9 @@ int insert_to_order_order_item(@Param("shipping_adress") String shipping_adress,
     List<BestSell> best_sell_month(@Param("thang") int thang,
                                    @Param("nam") int nam);
 
+    @Query(value = "CALL getOrder_byIdUser_evaluate(:id_User)", nativeQuery = true)
+    List<OrderDTO> getOrder_byIdUser_evaluate(@Param("id_User") long id_User);
+
 
     @Query(value = "CALL delete_order(:idorder);", nativeQuery = true)
     Long delete_order(@Param("idorder") long idorder);

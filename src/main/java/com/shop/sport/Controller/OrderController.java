@@ -116,6 +116,21 @@ public class OrderController {
         }
     }
 
+    // lấy tất cả những sản phẩm đã mua nhưng chưa có đánh giá ucar user có id là id
+    @GetMapping ("not-evaluate/{id}")
+    public ResponseEntity<Object> getOrderNotEvaluate(@PathVariable("id") long iduser) {
+        try {
+
+            List<OrderDTO> list = orderService.getOrder_byIdUserNotValuate(iduser);
+
+            return response.generateResponse("get list order chưa được đánh giá  Successfully", HttpStatus.OK, list);
+
+        }catch (Exception e) {
+            return response.generateResponse("get list order item failed"+e.getMessage(), HttpStatus.OK, 0 );
+
+        }
+    }
+
 
     @GetMapping ("/by-user/{id}")
     public ResponseEntity<Object> getOrderByIdUser(@PathVariable("id") long iduser) {
