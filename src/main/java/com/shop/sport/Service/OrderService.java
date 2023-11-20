@@ -38,6 +38,10 @@ public class OrderService {
 
     }
 
+    public Order1 saveToDB(Order1 order1){
+        return orderReopository.save(order1);
+    }
+
     public Order1 findByID(long id) {
         return  orderReopository.findById(id).orElse(null);
     }

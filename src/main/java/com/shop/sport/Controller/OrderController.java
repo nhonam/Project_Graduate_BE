@@ -4,11 +4,13 @@ import com.shop.sport.DTO.BestSell;
 import com.shop.sport.DTO.HoaDon;
 import com.shop.sport.DTO.OrderDTO;
 import com.shop.sport.Entity.Order1;
+import com.shop.sport.Entity.OrderStatus;
 import com.shop.sport.Entity.User;
 import com.shop.sport.MailService.EmailDetails;
 import com.shop.sport.MailService.EmailService;
 import com.shop.sport.Response.Response;
 import com.shop.sport.Service.OrderService;
+import com.shop.sport.Service.OrderStatusService;
 import com.shop.sport.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,8 +31,8 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-//    @Autowired
-//    private CartService cartService;
+    @Autowired
+    private OrderStatusService orderStatusService;
 
     @Autowired
     private EmailService emailService;
@@ -159,7 +161,7 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/delete-order/{id}")
+    @GetMapping("/cancel-order/{id}")
     public ResponseEntity<Object> deleteOrder(
             @PathVariable long id
     ) {
@@ -167,15 +169,12 @@ public class OrderController {
         try {
 
 
-            long isDel =orderService.deleteOder(id);
-            if (isDel==1) {
-
-                return response.generateResponse("delete product successfully", HttpStatus.OK, isDel);
-            }
-
-            return response.generateResponse("delete product successfully", HttpStatus.OK, isDel);
+            Order1 order = orderService.findByID(id);
+            order.setOrderStatus(orderStatusService.findOrderStatusById(5)); // 5 là id của CANCEL trong bảng order_status
+            orderService.saveToDB(order);
+            return response.generateResponse("cancel order successfully", HttpStatus.OK, 1);
         } catch (Exception e) {
-            return response.generateResponse("delete product failed"+e.getMessage(), HttpStatus.OK, null);
+            return response.generateResponse("cancel order failed"+e.getMessage(), HttpStatus.OK, null);
 
         }
     }
