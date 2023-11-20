@@ -17,8 +17,7 @@ import java.io.IOException;
 
 @SpringBootApplication
 @OpenAPIDefinition(info = @Info(title = "Nho Nam API", version = "2.0", description = "Nho Nam Trying"))
-@CrossOrigin(origins = "http://**")
-
+@CrossOrigin(origins = "*")
 public class SportApplication {
 
 
