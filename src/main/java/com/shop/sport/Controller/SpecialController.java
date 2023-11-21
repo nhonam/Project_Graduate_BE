@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/api/v1/special-management")
+@CrossOrigin(origins = "http://localhost:3000")
 public class SpecialController {
 
     Response response = Response.getInstance();

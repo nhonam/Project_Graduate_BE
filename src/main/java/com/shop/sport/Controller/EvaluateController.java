@@ -14,6 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/evaluate-management")
+@CrossOrigin(origins = "http://localhost:3000")
 public class EvaluateController {
 
     Response response = Response.getInstance();

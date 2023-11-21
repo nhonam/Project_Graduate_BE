@@ -41,11 +41,13 @@ public class JwtAnthenticationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
 
-//        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
-//        response.setHeader("Access-Control-Allow-Credentials", "true");
-//        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-//        response.setHeader("Access-Control-Max-Age", "3600");
-//        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
+//        HttpServletRequest request = (HttpServletRequest) servletRequest;
+//        HttpServletResponse response = (HttpServletResponse) servletResponse;
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+        response.setHeader("Access-Control-Allow-Methods", "OPTIONS");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+
 
         if (request.getServletPath().contains("/api/v1/auth") ||
                 request.getServletPath().contains("/api/v1/product/allProduct") ||
@@ -54,8 +56,10 @@ public class JwtAnthenticationFilter extends OncePerRequestFilter {
                 request.getServletPath().contains("forget-password") ||
                 request.getServletPath().contains("category/getAllCategory") ||
                 request.getServletPath().contains("product/byCategory") ||
+                request.getServletPath().contains("special-management/specials") ||
                 request.getServletPath().contains("/update")) {
             try {
+
                 filterChain.doFilter(request, response);
             } catch (Exception e) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
