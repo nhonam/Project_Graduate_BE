@@ -1,5 +1,6 @@
 package com.shop.sport.Service;
 
+import com.shop.sport.DTO.EvaluateDTO;
 import com.shop.sport.Entity.Evaluate;
 import com.shop.sport.Entity.Unit;
 import com.shop.sport.Repositories.IEvaluateRepository;
@@ -32,16 +33,9 @@ public class EvaluateService {
         return environment.get();
     }
 
-    public List<Evaluate> getAllEvaluateByIdProduct(long idProduct) {
+    public List<EvaluateDTO> getAllEvaluateByIdProduct(long idProduct) {
 
-        List<Evaluate> evaluates =  (List<Evaluate>) iEvaluateRepository.findAll();
-        List<Evaluate> tmps =  new ArrayList<>();
-        for ( Evaluate item : evaluates
-             ) {
-            if (item.getProduct().getId()== idProduct)
-                tmps.add(item);
-        }
-        return tmps;
+        return iEvaluateRepository.get_all_evaluate_by_id_product(idProduct);
     }
 
     public Evaluate creatEvaluate(long idUser, String cmt, long idProduct, long idOrderItem, int start) {

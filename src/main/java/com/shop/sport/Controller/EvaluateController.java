@@ -1,5 +1,6 @@
 package com.shop.sport.Controller;
 
+import com.shop.sport.DTO.EvaluateDTO;
 import com.shop.sport.Entity.Evaluate;
 import com.shop.sport.Entity.Unit;
 import com.shop.sport.Response.Response;
@@ -53,7 +54,7 @@ public class EvaluateController {
     ) {
 
         try {
-            List<Evaluate> evaluates = evaluateService.getAllEvaluateByIdProduct(id_product);
+            List<EvaluateDTO> evaluates = evaluateService.getAllEvaluateByIdProduct(id_product);
 
             return response.generateResponse("Get All evaluates by id Product Successfully", HttpStatus.OK, evaluates);
         } catch (Exception e) {

@@ -57,6 +57,7 @@ public class JwtAnthenticationFilter extends OncePerRequestFilter {
                 request.getServletPath().contains("category/getAllCategory") ||
                 request.getServletPath().contains("product/byCategory") ||
                 request.getServletPath().contains("special-management/specials") ||
+                request.getServletPath().contains("api/v1/evaluate-management/evaluates/") ||
                 request.getServletPath().contains("/update")) {
             try {
 
@@ -68,7 +69,7 @@ public class JwtAnthenticationFilter extends OncePerRequestFilter {
                 response.setContentType("application/json");
 
                 // Create the response body
-                String jsonResponse = "{\"message\": \"Unauthorized - Invalid JWT\", \"code\": 401, \"data\": null}";
+                String jsonResponse = "{\"message\": \"Unauthorized 1 - Invalid JWT\", \"code\": 401, \"data\": null}";
 
                 // Write the response body
                 response.getWriter().write(jsonResponse);
