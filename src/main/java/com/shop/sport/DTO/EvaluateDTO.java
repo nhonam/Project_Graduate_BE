@@ -6,6 +6,6 @@ public interface EvaluateDTO {
     String getcomment();
     String getfullname();
     String getproduct_name();
-    String getimage_url();
+    String getavatar_url();
     int getstart();
 }

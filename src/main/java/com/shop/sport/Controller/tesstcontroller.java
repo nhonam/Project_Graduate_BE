@@ -1,5 +1,6 @@
 package com.shop.sport.Controller;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.shop.sport.Entity.User;
 import com.shop.sport.Service.FileUpload;
@@ -11,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.checkerframework.common.reflection.qual.GetClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -47,11 +49,13 @@ public class tesstcontroller {
     }
 
 
-    @RequestMapping("/send-notification")
-    @ResponseBody
-    public String sendNotification(@RequestBody Notification note,
-                                   @RequestParam String token) throws FirebaseMessagingException {
-        return firebaseService.sendNotification(note, token);
+    @GetMapping("/send-notification")
+    public String sendNotification() throws FirebaseMessagingException {
+        Notification note = new Notification();
+        note.setContent("3123");
+        note.setSubject("3123");
+
+        return firebaseService.sendNotification(note, "e_kOtxZHSf2GUCj6k5DDTQ:APA91bGhCAadhJd7vY28_icaSoeZhPlx0riRxA_53-MQQlHZYh0BqItfBsMoqLGHY-t8FDzf2SrnC0VFcvAu5SudODk23vtpzClRtYdRlRTTetiIJbzrPiV7lQJMXOkS_4xHUk_nBKxt");
     }
 
 

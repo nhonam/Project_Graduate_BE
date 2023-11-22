@@ -4,6 +4,8 @@ import com.shop.sport.Entity.Activity;
 import com.shop.sport.Entity.Category;
 import com.shop.sport.Response.Response;
 import com.shop.sport.Service.ActivityService;
+import com.shop.sport.Utils.PushNoti.FirebaseMessageService;
+import com.shop.sport.Utils.PushNoti.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,10 @@ public class ActivityController {
 
     @Autowired
     private ActivityService activityService;
+
+
+    @Autowired
+    private FirebaseMessageService firebaseService;
 
     @PostMapping("/activities")
     public ResponseEntity<Object> createActivity(@RequestBody Map<String, String> body) {
@@ -40,6 +46,10 @@ public class ActivityController {
     public ResponseEntity<Object> getAllActivity() {
 
         try {
+
+
+
+
             List<Activity> activities = activityService.getAllActivity();
 
             return response.generateResponse("Get All activities Successfully", HttpStatus.OK, activities);

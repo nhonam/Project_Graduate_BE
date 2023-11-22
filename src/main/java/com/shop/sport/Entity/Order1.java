@@ -3,7 +3,6 @@ package com.shop.sport.Entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.sql.Date;
 import java.util.Collection;
 
@@ -14,6 +13,7 @@ import java.util.Collection;
 @Getter
 @Setter
 public class Order1 {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

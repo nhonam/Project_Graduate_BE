@@ -8,6 +8,8 @@ import com.shop.sport.Response.Response;
 import com.shop.sport.Service.FileUpload;
 import com.shop.sport.Service.RoleService;
 import com.shop.sport.Service.UserService;
+import com.shop.sport.Utils.PushNoti.FirebaseMessageService;
+import com.shop.sport.Utils.PushNoti.Notification;
 import com.shop.sport.Utils.Utils;
 import com.shop.sport.auth.AuthenticationService;
 import com.shop.sport.auth.RegisterRequest;
@@ -38,6 +40,77 @@ public class UserController {
     private  AuthenticationService authenticationService;
     @Autowired
     private  PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private FirebaseMessageService firebaseMessageService;
+
+
+    @PostMapping("/push-noti")
+    public ResponseEntity<Object> pushnotification(
+            @PathVariable long id,
+            @RequestBody Map<String, String> body
+    ) {
+
+
+
+        try {
+
+            Notification note = new Notification();
+            note.setContent("3123");
+            note.setSubject("3123");
+            note.setImage("https://res.cloudinary.com/dzljztsyy/image/upload/v1700641533/shop_sport/avatart%20default/nhonam_byy5ah.png");
+
+            firebaseMessageService.sendNotification(note, "e_kOtxZHSf2GUCj6k5DDTQ:APA91bGhCAadhJd7vY28_icaSoeZhPlx0riRxA_53-MQQlHZYh0BqItfBsMoqLGHY-t8FDzf2SrnC0VFcvAu5SudODk23vtpzClRtYdRlRTTetiIJbzrPiV7lQJMXOkS_4xHUk_nBKxt");
+
+            List<User> users = userService.getAllUserByRole("EMPLOYEE");
+
+            return response.generateResponse("Get All employee Successfully", HttpStatus.OK, users);
+        } catch (Exception e) {
+            return response.generateResponse("Get All employee fail"+e.getMessage(), HttpStatus.BAD_REQUEST, null);
+        }
+
+
+    }
+
+
+
+    @PostMapping("/find-device/{id}")
+    public ResponseEntity<Object> finDeviceTokenAndSave(
+            @PathVariable long id,
+            @RequestBody Map<String, String> body
+
+    ) {
+
+        try {
+            User users = userService.getUserById(id);
+            if (users.getTokenDevice()==null){
+                users.setTokenDevice(body.get("fcm_token"));
+                userService.updateUser(users);
+
+                return response.generateResponse("Save device token successfully", HttpStatus.OK, users);
+            }
+
+            List<User> list = userService.getAllUsers();
+
+            for (int i = 0; i < list.size(); i++) {
+
+                if (users.getTokenDevice()==list.get(i).getTokenDevice()){
+                    return response.generateResponse("Device token is exsit", HttpStatus.BAD_REQUEST, users);
+                }
+                users.setTokenDevice(body.get("fcm_token"));
+                userService.updateUser(users);
+
+                return response.generateResponse("Save device token successfully", HttpStatus.OK, users);
+
+            }
+            return response.generateResponse("Save device token successfully", HttpStatus.OK, users);
+
+        } catch (Exception e) {
+            return response.generateResponse("Save Device token fail"+e.getMessage(), HttpStatus.BAD_REQUEST, null);
+        }
+
+
+    }
 
 
     @GetMapping("/getAllEmployee")

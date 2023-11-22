@@ -58,6 +58,7 @@ public class JwtAnthenticationFilter extends OncePerRequestFilter {
                 request.getServletPath().contains("product/byCategory") ||
                 request.getServletPath().contains("special-management/specials") ||
                 request.getServletPath().contains("api/v1/evaluate-management/evaluates/") ||
+                request.getServletPath().contains("/api/v1/banner/five") ||
                 request.getServletPath().contains("/update")) {
             try {
 

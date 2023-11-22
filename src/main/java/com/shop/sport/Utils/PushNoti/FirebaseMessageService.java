@@ -23,6 +23,7 @@ public class FirebaseMessageService {
                 .builder()
                 .setTitle(note.getSubject())
                 .setBody(note.getContent())
+                .setImage(note.getImage())
                 .build();
 
 
@@ -30,7 +31,6 @@ public class FirebaseMessageService {
                 .builder()
                 .setToken(token)
                 .setNotification(notification)
-                .putAllData(note.getData())
                 .build();
 
         return firebaseMessaging.send(message);

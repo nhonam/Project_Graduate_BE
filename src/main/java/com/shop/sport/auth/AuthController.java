@@ -1,5 +1,6 @@
 package com.shop.sport.auth;
 
+import com.google.firebase.messaging.FirebaseMessagingException;
 import com.shop.sport.Entity.Role;
 import com.shop.sport.Entity.User;
 import com.shop.sport.Response.Response;
@@ -7,6 +8,8 @@ import com.shop.sport.Service.FileUpload;
 import com.shop.sport.Service.JwtService;
 import com.shop.sport.Service.RoleService;
 import com.shop.sport.Service.UserService;
+import com.shop.sport.Utils.PushNoti.FirebaseMessageService;
+import com.shop.sport.Utils.PushNoti.Notification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,8 +38,11 @@ public class AuthController {
 
     private final AuthenticationService authenticationService;
 
+
+
     @PostMapping(value = "/register")
-    public ResponseEntity<Object> register(@RequestBody RegisterRequest request){
+    public ResponseEntity<Object> register(@RequestBody RegisterRequest request) {
+
 
 
         if (authenticationService.checkUserExist(request.getUsername()))

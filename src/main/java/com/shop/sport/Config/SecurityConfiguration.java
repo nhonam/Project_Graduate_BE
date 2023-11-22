@@ -40,7 +40,8 @@ public class SecurityConfiguration {
                 .authorizeRequests()
                 .requestMatchers("/api/v1/auth/*","/swagger-ui/**","/v3/api-docs","/api/v1/user/update/**","/api/v1/product/update/*"
                         ,"/api/v1/user/forget-password/*", "/api/v1/product/**","/api/v1/product/delete/**","/api/v1/test/*",
-                        "/api/v1/category/getAllCategory","api/v1/product/byCategory","api/v1/special-management/specials","/api/v1/evaluate-management/evaluates/*")
+                        "/api/v1/category/getAllCategory","api/v1/product/byCategory","api/v1/special-management/specials","/api/v1/evaluate-management/evaluates/*",
+                        "/api/v1/banner/five")
                 .permitAll()
                 .anyRequest()
                 .authenticated();

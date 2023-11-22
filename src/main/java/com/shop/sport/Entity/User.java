@@ -31,12 +31,9 @@ public class User implements UserDetails {
   private String password;
   private String phone;
 
-
   @ManyToOne
   @JoinColumn(name = "id_role") // // thông qua khóa ngoại id
   private Role role;
-
-
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   @JsonIgnore
@@ -62,7 +59,8 @@ public class User implements UserDetails {
   @JsonIgnore
   private Collection<CartItem> cartItems;
 
-
+  @Column(name = "token_device")
+  private String tokenDevice;
 
 //  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 //  @JsonIgnore

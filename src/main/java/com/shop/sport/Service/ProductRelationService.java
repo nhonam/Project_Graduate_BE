@@ -1,9 +1,7 @@
 package com.shop.sport.Service;
 
 import com.shop.sport.Entity.ProductRelation;
-import com.shop.sport.Entity.Special;
 import com.shop.sport.Repositories.IProducRelationRepository;
-import com.shop.sport.Repositories.ISpecialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
