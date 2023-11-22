@@ -8,6 +8,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.python.jline.internal.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
@@ -41,12 +42,36 @@ public class JwtAnthenticationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
 
+        filterChain.doFilter(request, response);
+
+    }
+
+
+
+        /*
+
+    @Override
+    protected void doFilterInternal(
+            @NonNull HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain
+    ) throws ServletException, IOException {
+
 //        HttpServletRequest request = (HttpServletRequest) servletRequest;
 //        HttpServletResponse response = (HttpServletResponse) servletResponse;
         response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         response.setHeader("Access-Control-Allow-Methods", "OPTIONS");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Allow-Headers", "Authorization");
+        response.setHeader("Access-Control-Allow-Credentials", "false");
+
+//        response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+//        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+//        response.setHeader("Access-Control-Allow-Credentials", "true");
+//        response.setHeader("Access-Control-Max-Age", "1800");
+//        response.setHeader("Access-Control-Allow-Headers", "content-type");
+//        response.setHeader("Access-Control-Allow-Methods","PUT, POST, GET, DELETE, PATCH, OPTIONS");
+//        response.setHeader("Access-Control-Allow-Credentials", "false");
+        // res.setHeader("Content-Type", "application/json;charset=utf-8"); // Opening this comment will cause problems
 
 
         if (request.getServletPath().contains("/api/v1/auth") ||
@@ -86,7 +111,10 @@ public class JwtAnthenticationFilter extends OncePerRequestFilter {
 
             return;
         }
-
+        System.out.println("-----------------------------");
+        System.out.println(request.getHeader("Authorization"));
+//        System.out.println(request.getHeader("Authorization"));
+        System.out.println("-----------------------------");
         final String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -199,5 +227,8 @@ public class JwtAnthenticationFilter extends OncePerRequestFilter {
         }
 
     }
+
+
+         */
 
 }
