@@ -1,10 +1,14 @@
 package com.shop.sport.Controller;
 
 import com.shop.sport.Entity.Product;
+import com.shop.sport.Entity.User;
 import com.shop.sport.Response.Response;
 import com.shop.sport.Service.FileUpload;
 import com.shop.sport.Service.ProductService;
 import com.shop.sport.Service.SpecialDetailService;
+import com.shop.sport.Service.UserService;
+import com.shop.sport.Utils.PushNoti.FirebaseMessageService;
+import com.shop.sport.Utils.PushNoti.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +30,10 @@ public class ProductController {
     private ProductService productService;
 
     @Autowired
-    private SpecialDetailService specialDetailService;
+    private UserService userService;
+
+    @Autowired
+    private FirebaseMessageService firebaseMessageService;
 
 
     @GetMapping("/allProduct")
@@ -113,8 +120,28 @@ public class ProductController {
             public_id = upload.get("public_id");
 
             if (productService.CreateProduct(productName, stockQuantity, price, description, upload.get("url"), public_id,
-                    (int) id_category, (int) id_environment, (int) id_supplier, (int) id_activity, (int) id_brand, (int) id_unit,id_special_details) ==1)
+                    (int) id_category, (int) id_environment, (int) id_supplier, (int) id_activity, (int) id_brand, (int) id_unit,id_special_details) ==1) {
+
+                Notification note = new Notification();
+                note.setContent("Mời bạn ghé thăm !!! ");
+                note.setSubject("Sản phẩm mới của cửa hàng vừa ra mắt nhanh tay bạn ơi :>");
+                note.setImage(upload.get("url"));
+
+                List<User> userList = userService.getAllUserByRole("CUSTOMER");
+
+                for (int i = 0; i < userList.size(); i++) {
+                    firebaseMessageService.sendNotification(note, userList.get(i).getTokenDevice());
+                }
+
+//                User user = userService.getUserById(id);
+//                System.out.println("------------");
+//                System.out.println(user.getTokenDevice());
+//                f
+//                firebaseMessageService.sendNotification(note, user.getTokenDevice());
+
                 return response.generateResponse("create product Successfully", HttpStatus.OK, "done");
+            }
+
 
             fileUpload.deleteFile(public_id);
             return response.generateResponse("create product failed (producer return fail) ProductController", HttpStatus.BAD_REQUEST, null);

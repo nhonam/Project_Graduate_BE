@@ -13,6 +13,7 @@ import com.shop.sport.Utils.PushNoti.Notification;
 import com.shop.sport.Utils.Utils;
 import com.shop.sport.auth.AuthenticationService;
 import com.shop.sport.auth.RegisterRequest;
+import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,28 +46,29 @@ public class UserController {
     private FirebaseMessageService firebaseMessageService;
 
 
-    @PostMapping("/push-noti")
+    @PostMapping("/push-noti/{id}")
     public ResponseEntity<Object> pushnotification(
             @PathVariable long id,
             @RequestBody Map<String, String> body
     ) {
-
-
-
         try {
 
             Notification note = new Notification();
-            note.setContent("3123");
-            note.setSubject("3123");
-            note.setImage("https://res.cloudinary.com/dzljztsyy/image/upload/v1700641533/shop_sport/avatart%20default/nhonam_byy5ah.png");
+            note.setContent(body.get("content"));
+            note.setSubject(body.get("title"));
+            note.setImage("https://res.cloudinary.com/dzljztsyy/image/upload/v1700707731/shop_sport/avatart%20default/3531a97a-613d-47f5-8e6a-5fa6f780a2fa_q1jgan.png");
 
-            firebaseMessageService.sendNotification(note, "e_kOtxZHSf2GUCj6k5DDTQ:APA91bGhCAadhJd7vY28_icaSoeZhPlx0riRxA_53-MQQlHZYh0BqItfBsMoqLGHY-t8FDzf2SrnC0VFcvAu5SudODk23vtpzClRtYdRlRTTetiIJbzrPiV7lQJMXOkS_4xHUk_nBKxt");
 
-            List<User> users = userService.getAllUserByRole("EMPLOYEE");
 
-            return response.generateResponse("Get All employee Successfully", HttpStatus.OK, users);
+            User user = userService.getUserById(id);
+            System.out.println("------------");
+            System.out.println(user.getTokenDevice());
+            firebaseMessageService.sendNotification(note, user.getTokenDevice());
+
+
+            return response.generateResponse("push notification Successfully", HttpStatus.OK, "done");
         } catch (Exception e) {
-            return response.generateResponse("Get All employee fail"+e.getMessage(), HttpStatus.BAD_REQUEST, null);
+            return response.generateResponse("push notification fail"+e.getMessage(), HttpStatus.BAD_REQUEST, null);
         }
 
 
@@ -83,7 +85,7 @@ public class UserController {
 
         try {
             User users = userService.getUserById(id);
-            if (users.getTokenDevice()==null){
+            if (users.getTokenDevice()==null || users.getTokenDevice()==""|| users.getTokenDevice()!=body.get("fcm_token")){
                 users.setTokenDevice(body.get("fcm_token"));
                 userService.updateUser(users);
 
