@@ -52,17 +52,24 @@ public class UserController {
             @RequestBody Map<String, String> body
     ) {
         try {
+            User user = userService.getUserById(id);
+            if(user.getTokenDevice()==null ||user.getTokenDevice()==""){
+                return response.generateResponse("device token is not exsit or token invalid", HttpStatus.BAD_REQUEST, null);
+
+            }
 
             Notification note = new Notification();
             note.setContent(body.get("content"));
             note.setSubject(body.get("title"));
-            note.setImage("https://res.cloudinary.com/dzljztsyy/image/upload/v1700707731/shop_sport/avatart%20default/3531a97a-613d-47f5-8e6a-5fa6f780a2fa_q1jgan.png");
+            if(body.get("image_url")==null || body.get("image_url")=="")
+                note.setImage("https://res.cloudinary.com/dzljztsyy/image/upload/v1700793742/shop_sport/avatart%20default/logoshop_gtr9tk.png");
+            else
+                note.setImage(body.get("image_url"));
 
 
 
-            User user = userService.getUserById(id);
-            System.out.println("------------");
-            System.out.println(user.getTokenDevice());
+
+
             firebaseMessageService.sendNotification(note, user.getTokenDevice());
 
 
