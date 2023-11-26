@@ -22,7 +22,7 @@ public interface IProductRepo extends CrudRepository<Product, Long> {
     Long check_delete_product(@Param("idProduct") long id);
 
     @Query(value = "CALL AddProduct(:product_name,:stock_quantity,:price,:description,:image_url,:public_id," +
-            ":category_id,:id_environment,:id_supplier,:id_activity,:id_brand, :id_unit,:id_special_details);", nativeQuery = true)
+            ":category_id,:id_environment,:id_supplier,:id_activity,:id_brand, :id_unit);", nativeQuery = true)
     int AddProduct(@Param("product_name") String product_name,
                     @Param("stock_quantity") int stock_quantity,
                     @Param("price") float price,
@@ -34,8 +34,7 @@ public interface IProductRepo extends CrudRepository<Product, Long> {
                     @Param("id_supplier") int id_supplier,
                     @Param("id_activity") int id_activity,
                     @Param("id_brand") int id_brand,
-                    @Param("id_unit") int id_unit,
-                    @Param("id_special_details") String id_special_details
+                    @Param("id_unit") int id_unit
 
                    );
     @Query(value = "CALL best_sell_product();", nativeQuery = true)
@@ -47,6 +46,9 @@ public interface IProductRepo extends CrudRepository<Product, Long> {
 
     @Query(value = "CALL is_exsit_product(:text);", nativeQuery = true)
     int is_exsit_product(@Param("text") String text);
+
+    @Query(value = "CALL get_quanti_bought_by_idProduct(:id);", nativeQuery = true)
+    long get_quanti_bought_by_idProduct(@Param("id") long id);
 
     @Query(value = "CALL search_product(:text);", nativeQuery = true)
     List<Product> searchProduct(@Param("text") String text);

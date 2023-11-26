@@ -51,6 +51,11 @@ public class OrderService {
 
     }
 
+    public List<OrderDTO> getAllOrderByEmployee() {
+        return orderReopository.get_all_order_by_employee();
+
+    }
+
     public List<OrderDTO> getOrder_byIdUserNotValuate(long idUser) {
         return orderReopository.getOrder_byIdUser_evaluate(idUser);
 

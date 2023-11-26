@@ -147,6 +147,19 @@ public class OrderController {
         }
     }
 
+    @GetMapping ("/orders")
+    public ResponseEntity<Object> getOrdersByEmployee() {
+        try {
+
+            List<OrderDTO> list = orderService.getAllOrderByEmployee();
+            return response.generateResponse("get list order  Successfully", HttpStatus.OK, list);
+
+        }catch (Exception e) {
+            return response.generateResponse("get list order  failed"+e.getMessage(), HttpStatus.OK, 0 );
+
+        }
+    }
+
     @GetMapping ("/best-sell/{thang}/{nam}")
     public ResponseEntity<Object> getBestSell(@PathVariable("thang") int thang,
                                                    @PathVariable("nam")int nam) {

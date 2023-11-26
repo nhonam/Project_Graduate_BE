@@ -1,13 +1,8 @@
 package com.shop.sport.Service;
 
-import com.shop.sport.DTO.CartDTO;
 import com.shop.sport.Entity.Activity;
-import com.shop.sport.Entity.Category;
-import com.shop.sport.Entity.Environment;
 import com.shop.sport.Repositories.IActivityRepository;
-import com.shop.sport.Repositories.ICartItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

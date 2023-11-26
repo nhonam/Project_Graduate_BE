@@ -29,9 +29,9 @@ public class ProductService {
     }
 
     public int CreateProduct(String product_name,int stock_quantity,float price,String description,String image_url,String public_id,
-            int category_id,int id_environment,int id_supplier,int id_activity,int id_brand,int id_unit,String id_special_details) {
+            int category_id,int id_environment,int id_supplier,int id_activity,int id_brand,int id_unit) {
         return iProductRepo.AddProduct(product_name,stock_quantity,price,description,image_url,public_id,
-        category_id,id_environment,id_supplier,id_activity,id_brand,id_unit,id_special_details);
+        category_id,id_environment,id_supplier,id_activity,id_brand,id_unit);
     }
 
     public List<Product> bestSell() {
@@ -52,6 +52,10 @@ public class ProductService {
 
     public int isExsitProduct(String text) {
         return iProductRepo.is_exsit_product(text);
+    }
+
+    public long QuantiProductSell(long idProduct) {
+        return iProductRepo.get_quanti_bought_by_idProduct(idProduct);
     }
 
     public Optional<Product> getProductById(long id) {

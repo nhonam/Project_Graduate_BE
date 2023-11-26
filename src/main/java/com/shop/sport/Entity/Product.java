@@ -47,9 +47,7 @@ public class Product {
     @JsonIgnore
     private Collection<CartItem> cartItems;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private Collection<SpecialSelected> specialSelecteds;
+
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @JsonIgnore

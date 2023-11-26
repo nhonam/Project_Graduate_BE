@@ -5,7 +5,6 @@ import com.shop.sport.Entity.User;
 import com.shop.sport.Response.Response;
 import com.shop.sport.Service.FileUpload;
 import com.shop.sport.Service.ProductService;
-import com.shop.sport.Service.SpecialDetailService;
 import com.shop.sport.Service.UserService;
 import com.shop.sport.Utils.PushNoti.FirebaseMessageService;
 import com.shop.sport.Utils.PushNoti.Notification;
@@ -106,21 +105,20 @@ public class ProductController {
             @RequestParam("id_activity") long id_activity,
             @RequestParam("id_brand") long id_brand,
             @RequestParam("id_unit") long id_unit,
-            @RequestParam("id_special_details") String id_special_details,
             @RequestParam(value = "image") MultipartFile multipartFile
 
     ) throws IOException {
         String public_id = "";
         try {
             if (productService.isExsitProduct(productName) == 1) {
-                return response.generateResponse(" product is exsit", HttpStatus.OK, "done");
+                return response.generateResponse(" product is exsit", HttpStatus.OK, "exsit");
             }
 
             Map<String, String> upload = fileUpload.uploadFile(multipartFile);
             public_id = upload.get("public_id");
 
             if (productService.CreateProduct(productName, stockQuantity, price, description, upload.get("url"), public_id,
-                    (int) id_category, (int) id_environment, (int) id_supplier, (int) id_activity, (int) id_brand, (int) id_unit,id_special_details) ==1) {
+                    (int) id_category, (int) id_environment, (int) id_supplier, (int) id_activity, (int) id_brand, (int) id_unit) ==1) {
 
                 Notification note = new Notification();
                 note.setContent("Mời bạn ghé thăm !!! ");
@@ -163,9 +161,11 @@ public class ProductController {
             Product product = productService.getProductById(id).get();
             if (product == null)
                 return response.generateResponse("product not found", HttpStatus.BAD_REQUEST, null);
+
             Map<String, Object> data = new HashMap<>();
             data.put("product", product);
-            data.put("special", productService.getSpecialDTO(product.getId()));
+            data.put("special", productService.getSpecialDTO(id));
+            data.put("quanti_sold", productService.QuantiProductSell(id));
 
 
 

@@ -1,12 +1,9 @@
 package com.shop.sport.Controller;
 
 import com.shop.sport.Entity.Category;
-import com.shop.sport.Entity.Special;
 import com.shop.sport.Response.Response;
 import com.shop.sport.Service.CategoryService;
 import com.shop.sport.Service.FileUpload;
-import com.shop.sport.Service.SpecialSelectedService;
-import com.shop.sport.Service.SpecialService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,8 +22,6 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @Autowired
-    private SpecialService specialService;
 
     @Autowired
     private FileUpload fileUpload;
@@ -99,8 +94,6 @@ public class CategoryController {
     @Transactional
     public ResponseEntity<Object> createCategory(
             @RequestParam("categoryName") String categoryName,
-            @RequestParam("ids_special") String ids_special,
-
             @RequestParam(value = "image" , required = true) MultipartFile multipartFile
 
     ) throws IOException {
@@ -120,17 +113,7 @@ public class CategoryController {
             category.setPublicId(public_id);
 
             categoryService.createCategory(category);
-            String[] items = ids_special.split(",");
-            // Now, the 'items' array contains individual items as strings
-            for (String idSpecial : items) {
-                try {
-                    specialService.updateIdCategorySpecial( Long.parseLong(idSpecial),  category.getId());
-                } catch (Exception e) {
-                    categoryService.delete(category.getId());
-                    fileUpload.deleteFile(public_id);
-                    return response.generateResponse("createCategory fail specilal is not exsit", HttpStatus.OK, null);
-                }
-            }
+
 
             return response.generateResponse("createCategory Successfully", HttpStatus.OK, category);
         } catch (Exception e) {

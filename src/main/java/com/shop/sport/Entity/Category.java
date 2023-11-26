@@ -28,9 +28,6 @@ public class Category {
     @Column(name = "public_id")
     private String publicId;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private Collection<Special> specials;
 
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
