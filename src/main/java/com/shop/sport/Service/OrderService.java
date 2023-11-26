@@ -50,7 +50,10 @@ public class OrderService {
             return orderReopository.getOrder_byIdUser(idUser);
 
     }
+    public List<Order1> getAllOrder() {
+        return (List<Order1>) orderReopository.findAll();
 
+    }
     public List<OrderDTO> getAllOrderByEmployee() {
         return orderReopository.get_all_order_by_employee();
 
