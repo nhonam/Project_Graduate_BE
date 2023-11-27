@@ -26,7 +26,7 @@ public class SportApplication {
 				.builder()
 				.setCredentials(googleCredentials)
 				.build();
-		FirebaseApp app = FirebaseApp.initializeApp(firebaseOptions, "my-app");
+		FirebaseApp app = FirebaseApp.initializeApp(firebaseOptions, "Main_App_Sport");
 		return FirebaseMessaging.getInstance(app);
 	}
 

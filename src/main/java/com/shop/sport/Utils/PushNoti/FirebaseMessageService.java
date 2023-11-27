@@ -19,22 +19,30 @@ public class FirebaseMessageService {
 
     public String sendNotification(Notification note, String token) throws FirebaseMessagingException {
 
+        if (token==null|| token=="")
+            return "";
 
-        com.google.firebase.messaging.Notification notification = com.google.firebase.messaging.Notification
-                .builder()
-                .setTitle(note.getSubject())
-                .setBody(note.getContent())
-                .setImage(note.getImage())
-                .build();
+        try {
+            com.google.firebase.messaging.Notification notification = com.google.firebase.messaging.Notification
+                    .builder()
+                    .setTitle(note.getSubject())
+                    .setBody(note.getContent())
+                    .setImage(note.getImage())
+                    .build();
 
 
-        Message message = Message
-                .builder()
-                .setToken(token)
-                .setNotification(notification)
-                .build();
+            Message message = Message
+                    .builder()
+                    .setToken(token)
+                    .setNotification(notification)
+                    .build();
 
-        return firebaseMessaging.send(message);
+            return firebaseMessaging.send(message);
+        } catch (Exception e) {
+            return "";
+        }
+
+
     }
 
 }

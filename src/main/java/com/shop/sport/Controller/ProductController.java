@@ -125,18 +125,14 @@ public class ProductController {
                 note.setSubject("Sản phẩm mới của cửa hàng vừa ra mắt nhanh tay bạn ơi :>");
                 note.setImage(upload.get("url"));
 
-//                List<User> userList = userService.getAllUserByRole("CUSTOMER");
-//
-//                for (int i = 0; i < userList.size(); i++) {
-//                    if(userList.get(i).getTokenDevice()!=null)
-//                        firebaseMessageService.sendNotification(note, userList.get(i).getTokenDevice());
-//                }
+                List<User> userList = userService.getAllUserByRole("CUSTOMER");
 
-//                User user = userService.getUserById(id);
-//                System.out.println("------------");
-//                System.out.println(user.getTokenDevice());
-//                f
-//                firebaseMessageService.sendNotification(note, user.getTokenDevice());
+                for (int i = 0; i < userList.size(); i++) {
+                    if(userList.get(i).getTokenDevice()!=null || userList.get(i).getTokenDevice()!="")
+                        firebaseMessageService.sendNotification(note, userList.get(i).getTokenDevice());
+                }
+
+
 
                 return response.generateResponse("create product Successfully", HttpStatus.OK, "done");
             }

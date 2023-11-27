@@ -41,19 +41,19 @@ public class OrderEmployeeController {
 
 
     // lấy tất cả các đơn hàng theo ngày đặt từ mới nhất tới cũ nhất
-//    @GetMapping ("/orders}")
-//    public ResponseEntity<Object> getOrderWaitConfirm() {
-//        try {
-//
-//            List<Order1> list = orderService.getAllOrder();
-//
-//            return response.generateResponse("get list order item Successfully", HttpStatus.OK, list);
-//
-//        }catch (Exception e) {
-//            return response.generateResponse("get list order item failed"+e.getMessage(), HttpStatus.OK, 0 );
-//
-//        }
-//    }
+    @GetMapping ("/all")
+    public ResponseEntity<Object> getOrderWaitConfirm() {
+        try {
+
+            List<Order1> list = orderService.getAllOrder();
+
+            return response.generateResponse("get list order item Successfully", HttpStatus.OK, list);
+
+        }catch (Exception e) {
+            return response.generateResponse("get list order item failed"+e.getMessage(), HttpStatus.OK, 0 );
+
+        }
+    }
 
     // lấy tất cả những sản phẩm đã mua nhưng chưa có đánh giá ucar user có id là id
     @GetMapping ("not-evaluate/{id}")
