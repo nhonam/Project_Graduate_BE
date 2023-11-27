@@ -29,7 +29,8 @@ public class Product {
     @Column(name = "price")
     private float price;
 
-    @Column(name = "description")
+    @Lob
+    @Column(name = "description",columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "image_url")

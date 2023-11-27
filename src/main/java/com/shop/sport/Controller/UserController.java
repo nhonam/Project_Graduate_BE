@@ -66,10 +66,6 @@ public class UserController {
             else
                 note.setImage(body.get("image_url"));
 
-
-
-
-
             firebaseMessageService.sendNotification(note, user.getTokenDevice());
 
 

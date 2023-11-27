@@ -19,8 +19,6 @@ public class FirebaseMessageService {
 
     public String sendNotification(Notification note, String token) throws FirebaseMessagingException {
 
-        if (token==null || token=="")
-            return "0";
 
         com.google.firebase.messaging.Notification notification = com.google.firebase.messaging.Notification
                 .builder()

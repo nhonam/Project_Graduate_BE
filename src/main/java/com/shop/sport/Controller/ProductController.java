@@ -125,11 +125,12 @@ public class ProductController {
                 note.setSubject("Sản phẩm mới của cửa hàng vừa ra mắt nhanh tay bạn ơi :>");
                 note.setImage(upload.get("url"));
 
-                List<User> userList = userService.getAllUserByRole("CUSTOMER");
-
-                for (int i = 0; i < userList.size(); i++) {
-                    firebaseMessageService.sendNotification(note, userList.get(i).getTokenDevice());
-                }
+//                List<User> userList = userService.getAllUserByRole("CUSTOMER");
+//
+//                for (int i = 0; i < userList.size(); i++) {
+//                    if(userList.get(i).getTokenDevice()!=null)
+//                        firebaseMessageService.sendNotification(note, userList.get(i).getTokenDevice());
+//                }
 
 //                User user = userService.getUserById(id);
 //                System.out.println("------------");
