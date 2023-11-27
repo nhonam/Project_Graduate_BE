@@ -43,7 +43,9 @@ int insert_to_order_order_item(@Param("shipping_adress") String shipping_adress,
 
     @Query(value = "CALL getOrder_byIdUser_evaluate(:id_User)", nativeQuery = true)
     List<OrderDTO> getOrder_byIdUser_evaluate(@Param("id_User") long id_User);
-
+    @Query(value = "CALL get_order_by_date(:start,:end)", nativeQuery = true)
+    List<Order1> get_order_by_date(@Param("start") String start,
+                                     @Param("end") String end);
 
     @Query(value = "CALL delete_order(:idorder);", nativeQuery = true)
     Long delete_order(@Param("idorder") long idorder);

@@ -54,6 +54,11 @@ public class OrderService {
         return (List<Order1>) orderReopository.findAll();
 
     }
+
+    public List<Order1> getAllOrderByDate(String start, String end) {
+        return (List<Order1>) orderReopository.get_order_by_date(start, end);
+
+    }
     public List<OrderDTO> getAllOrderByEmployee() {
         return orderReopository.get_all_order_by_employee();
 

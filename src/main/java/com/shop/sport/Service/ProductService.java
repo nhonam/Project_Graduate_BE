@@ -58,6 +58,10 @@ public class ProductService {
         return iProductRepo.get_quanti_bought_by_idProduct(idProduct);
     }
 
+    public int getStarByIdProduct(long idProduct) {
+        return (int) iProductRepo.get_star_by_id_product(idProduct);
+    }
+
     public Optional<Product> getProductById(long id) {
 //        if (id==0) return null;
         return iProductRepo.findById(id);

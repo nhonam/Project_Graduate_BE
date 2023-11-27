@@ -3,6 +3,7 @@ package com.shop.sport.Controller;
 import com.shop.sport.Entity.Product;
 import com.shop.sport.Entity.User;
 import com.shop.sport.Response.Response;
+import com.shop.sport.Service.EvaluateService;
 import com.shop.sport.Service.FileUpload;
 import com.shop.sport.Service.ProductService;
 import com.shop.sport.Service.UserService;
@@ -27,6 +28,9 @@ public class ProductController {
     private FileUpload fileUpload;
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private EvaluateService evaluateService;
 
     @Autowired
     private UserService userService;
@@ -161,8 +165,9 @@ public class ProductController {
 
             Map<String, Object> data = new HashMap<>();
             data.put("product", product);
-            data.put("special", productService.getSpecialDTO(id));
             data.put("quanti_sold", productService.QuantiProductSell(id));
+            data.put("star", productService.getStarByIdProduct(id));
+
 
 
 

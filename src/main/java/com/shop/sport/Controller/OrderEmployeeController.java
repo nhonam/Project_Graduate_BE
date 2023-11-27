@@ -54,6 +54,23 @@ public class OrderEmployeeController {
 
         }
     }
+//lấy danh sách đơn hàng theo khoảng thời gian
+    @PostMapping ("/all")
+    public ResponseEntity<Object> getOrderWaitConfirm(
+            @RequestBody Map<String, String> body
+    ) {
+        try {
+
+            List<Order1> list = orderService.getAllOrderByDate(body.get("date_start"),
+                    body.get("date_end"));
+
+            return response.generateResponse("get list order item Successfully", HttpStatus.OK, list);
+
+        }catch (Exception e) {
+            return response.generateResponse("get list order item failed"+e.getMessage(), HttpStatus.OK, 0 );
+
+        }
+    }
 
     // lấy tất cả những sản phẩm đã mua nhưng chưa có đánh giá ucar user có id là id
     @GetMapping ("not-evaluate/{id}")

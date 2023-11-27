@@ -48,6 +48,9 @@ public interface IProductRepo extends CrudRepository<Product, Long> {
     @Query(value = "CALL get_quanti_bought_by_idProduct(:id);", nativeQuery = true)
     long get_quanti_bought_by_idProduct(@Param("id") long id);
 
+    @Query(value = "CALL get_star_by_id_product(:id);", nativeQuery = true)
+    float get_star_by_id_product(@Param("id") long id);
+
     @Query(value = "CALL search_product(:text);", nativeQuery = true)
     List<Product> searchProduct(@Param("text") String text);
     @Query(value = "CALL getAllProductByCategory(:categoryName);", nativeQuery = true)
