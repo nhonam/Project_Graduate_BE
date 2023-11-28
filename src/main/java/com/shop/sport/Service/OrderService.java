@@ -3,6 +3,7 @@ package com.shop.sport.Service;
 import com.shop.sport.DTO.BestSell;
 import com.shop.sport.DTO.HoaDon;
 import com.shop.sport.DTO.OrderDTO;
+import com.shop.sport.DTO.OrderItemDTO;
 import com.shop.sport.Entity.Order1;
 import com.shop.sport.Entity.OrderItem;
 import com.shop.sport.Repositories.IOrderItem;
@@ -25,6 +26,11 @@ public class OrderService {
     public OrderItem findOrderItemByID(long id) {
         return  orderItemRepo.findById(id).orElse(null);
     }
+
+    public List<OrderItemDTO> findOrdersItemByID(long id_order) {
+        return  orderItemRepo.get_all_evaluate_by_id_product(id_order);
+    }
+
 
 
     public int insertOrder(long idUser, String adress, String phone, String name_reciver,

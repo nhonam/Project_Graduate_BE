@@ -3,7 +3,9 @@ package com.shop.sport.Controller;
 import com.shop.sport.DTO.BestSell;
 import com.shop.sport.DTO.HoaDon;
 import com.shop.sport.DTO.OrderDTO;
+import com.shop.sport.DTO.OrderItemDTO;
 import com.shop.sport.Entity.Order1;
+import com.shop.sport.Entity.OrderItem;
 import com.shop.sport.Entity.User;
 import com.shop.sport.MailService.EmailDetails;
 import com.shop.sport.MailService.EmailService;
@@ -38,6 +40,24 @@ public class OrderEmployeeController {
 
     @Autowired
     private UserService userService;
+
+
+    // get chi tiết đơn hàng
+    @GetMapping ("/detail/{id}")
+    public ResponseEntity<Object> getOrderDetailByID(
+            @PathVariable("id") long idOrder
+    ) {
+        try {
+
+            List<OrderItemDTO> list = orderService.findOrdersItemByID(idOrder);
+
+            return response.generateResponse("get list order item Successfully", HttpStatus.OK, list);
+
+        }catch (Exception e) {
+            return response.generateResponse("get list order item failed"+e.getMessage(), HttpStatus.OK, 0 );
+
+        }
+    }
 
 
     // lấy tất cả các đơn hàng theo ngày đặt từ mới nhất tới cũ nhất
