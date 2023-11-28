@@ -22,6 +22,9 @@ public class OrderItem {
     @Column(name = "price")
     private float price;
 
+    @Column(name = "price_capital")
+    private float price_capital;
+
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "id_product") // // thông qua khóa ngoại id

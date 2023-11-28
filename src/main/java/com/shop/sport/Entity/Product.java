@@ -29,6 +29,9 @@ public class Product {
     @Column(name = "price")
     private float price;
 
+    @Column(name = "price_capital")
+    private float priceCapital;
+
     @Lob
     @Column(name = "description",columnDefinition = "TEXT")
     private String description;
@@ -42,18 +45,17 @@ public class Product {
     @Column(name = "status")
     private Boolean status;
 
-
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Collection<ImportProductDetail> importProductDetails;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @JsonIgnore
     private Collection<CartItem> cartItems;
 
-
-
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @JsonIgnore
     private Collection<OrderItem> orderItems;
-
 
     @OneToMany(mappedBy = "productTarget", cascade = CascadeType.ALL)
     @JsonIgnore

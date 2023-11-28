@@ -57,6 +57,10 @@ public class User implements UserDetails {
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
   @JsonIgnore
+  private Collection<ImportProduct> importProducts;
+
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+  @JsonIgnore
   private Collection<CartItem> cartItems;
 
   @Column(name = "token_device")
