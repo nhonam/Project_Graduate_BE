@@ -54,7 +54,6 @@ public class Order1 {
 
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    @JsonIgnore
     private Collection<OrderItem> orderItems;
 
 //    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)

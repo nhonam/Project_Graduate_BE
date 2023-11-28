@@ -165,8 +165,10 @@ public class ProductController {
 
             Map<String, Object> data = new HashMap<>();
             data.put("product", product);
-            data.put("quanti_sold", productService.QuantiProductSell(id));
-            data.put("star", productService.getStarByIdProduct(id));
+//            data.put("quanti_sold", productService.QuantiProductSell(id));
+            data.put("quanti_sold", 12);
+            data.put("star", 1);
+//            data.put("star", productService.getStarByIdProduct(id));
 
 
 
