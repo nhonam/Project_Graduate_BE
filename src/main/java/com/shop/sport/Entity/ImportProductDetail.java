@@ -44,7 +44,7 @@ public class ImportProductDetail {
 //    private Collection<ImportProduct> importProducts;
 
     @Column(name = "quantity")
-    private Date quantity;
+    private int quantity;
 
     @Column(name = "price_import")
     private float priceImport;

@@ -17,7 +17,6 @@ import java.io.IOException;
 @OpenAPIDefinition(info = @Info(title = "Nho Nam API", version = "2.0", description = "Nho Nam Trying"))
 public class SportApplication {
 
-
 	@Bean
 	FirebaseMessaging firebaseMessaging() throws IOException {
 		GoogleCredentials googleCredentials = GoogleCredentials

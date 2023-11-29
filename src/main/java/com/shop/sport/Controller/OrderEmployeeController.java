@@ -6,6 +6,7 @@ import com.shop.sport.DTO.OrderDTO;
 import com.shop.sport.DTO.OrderItemDTO;
 import com.shop.sport.Entity.Order1;
 import com.shop.sport.Entity.OrderItem;
+import com.shop.sport.Entity.OrderStatus;
 import com.shop.sport.Entity.User;
 import com.shop.sport.MailService.EmailDetails;
 import com.shop.sport.MailService.EmailService;
@@ -55,6 +56,27 @@ public class OrderEmployeeController {
 
         }catch (Exception e) {
             return response.generateResponse("get list order item failed"+e.getMessage(), HttpStatus.OK, 0 );
+
+        }
+    }
+
+    // api nhap hang by employee
+    @PostMapping ("/import/{id}")
+    public ResponseEntity<Object> NhapHangByEmployee(
+            @PathVariable("id") long idUser,
+            @RequestBody Map<String, String> body
+    ) {
+        try {
+
+            int result = orderService.NhapHang(body.get("productIds"), body.get("quantities"),body.get("prices"),
+                    idUser);
+            if (result==1)
+                return response.generateResponse("thêm hóa đơn  Successfully", HttpStatus.OK, result);
+            else
+                return response.generateResponse("thêm hóa đơn v Successfully", HttpStatus.OK, result);
+
+        }catch (Exception e) {
+            return response.generateResponse("thêm hóa đơn  failed"+e.getMessage(), HttpStatus.OK, 0 );
 
         }
     }
@@ -163,6 +185,43 @@ public class OrderEmployeeController {
         } catch (Exception e) {
             return response.generateResponse("cancel order failed"+e.getMessage(), HttpStatus.OK, null);
 
+        }
+    }
+
+    @PostMapping("/update-status-order/{id}")
+    public ResponseEntity<Object> UpdateStatusOrder(
+            @PathVariable("id") long idOrder,
+            @RequestBody Map<String, String> body
+
+    ) {
+        try {
+            long idStatusOrder = Long.parseLong( body.get("id_order_status"));
+            Order1 order = orderService.findByID(idOrder);
+
+            //đơn hàng chờ xác nhận mới có thể hủy
+            if (order.getOrderStatus().getId()==1 && idStatusOrder==5) {
+                OrderStatus orderStatus = orderStatusService.findOrderStatusById(idStatusOrder);
+                order.setOrderStatus(orderStatus); // 5 là id của CANCEL trong bảng order_status
+                orderService.saveToDB(order);
+                return response.generateResponse("Hủy đơn hàng thành công", HttpStatus.OK, order);
+            }
+
+            if ((idStatusOrder==4||idStatusOrder==3||idStatusOrder==2|| idStatusOrder==1) &&order.getOrderStatus().getId()==5){
+                return response.generateResponse("Chuyển trạng thái sai !!!", HttpStatus.OK, 0);
+            } else if (order.getOrderStatus().getId()==2 && idStatusOrder==1)
+                return response.generateResponse("Chuyển trạng thái sai !!!", HttpStatus.OK, 0);
+            else if (order.getOrderStatus().getId()==3 &&( idStatusOrder==2|| idStatusOrder==1)) {
+                return response.generateResponse("Chuyển trạng thái sai !!!", HttpStatus.OK, 0);
+            }else if (order.getOrderStatus().getId()==4 && (idStatusOrder==3||idStatusOrder==2|| idStatusOrder==1)){
+                return response.generateResponse("Chuyển trạng thái sai !!!", HttpStatus.OK, 0);
+            }
+            OrderStatus orderStatus = orderStatusService.findOrderStatusById(idStatusOrder);
+            order.setOrderStatus(orderStatus);
+            orderService.saveToDB(order);
+            return response.generateResponse("chuyển trạng thái thành công", HttpStatus.OK, order);
+
+        } catch (Exception e) {
+            return response.generateResponse("update status order"+e.getMessage(), HttpStatus.OK, 0);
         }
     }
 

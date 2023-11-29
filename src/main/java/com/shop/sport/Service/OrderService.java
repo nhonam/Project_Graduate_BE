@@ -31,9 +31,13 @@ public class OrderService {
         return  orderItemRepo.get_all_evaluate_by_id_product(id_order);
     }
 
+    public int NhapHang(String productIds, String quantities, String prices, long id_employee) {
+        return  orderItemRepo.nhap_hang(productIds,quantities, prices, id_employee);
+    }
 
 
-    public int insertOrder(long idUser, String adress, String phone, String name_reciver,
+
+    public int  insertOrder(long idUser, String adress, String phone, String name_reciver,
                             String productIds, String quantities ) {
             try {
                return orderReopository.insert_to_order_order_item(adress,idUser,phone,name_reciver, productIds, quantities);
