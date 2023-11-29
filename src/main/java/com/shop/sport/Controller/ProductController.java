@@ -1,12 +1,10 @@
 package com.shop.sport.Controller;
 
 import com.shop.sport.Entity.Product;
+import com.shop.sport.Entity.Unit;
 import com.shop.sport.Entity.User;
 import com.shop.sport.Response.Response;
-import com.shop.sport.Service.EvaluateService;
-import com.shop.sport.Service.FileUpload;
-import com.shop.sport.Service.ProductService;
-import com.shop.sport.Service.UserService;
+import com.shop.sport.Service.*;
 import com.shop.sport.Utils.PushNoti.FirebaseMessageService;
 import com.shop.sport.Utils.PushNoti.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +29,24 @@ public class ProductController {
 
     @Autowired
     private EvaluateService evaluateService;
+
+    @Autowired
+    private CategoryService categoryService;
+
+
+    @Autowired
+    private BrandService brandService;
+
+    @Autowired
+    private ActivityService activityService;
+    @Autowired
+    private UnitService unitService;
+    @Autowired
+    private SupplierService supplierService;
+    @Autowired
+    private EnvironmentService environmentService;
+
+
 
     @Autowired
     private UserService userService;
@@ -99,7 +115,6 @@ public class ProductController {
 
     @PostMapping("/add")
     public ResponseEntity<Object> createProduct(
-            @RequestParam("stockQuantity") int stockQuantity,
             @RequestParam("price") float price,
             @RequestParam("description") String description,
             @RequestParam("productName") String productName,
@@ -121,7 +136,7 @@ public class ProductController {
             Map<String, String> upload = fileUpload.uploadFile(multipartFile);
             public_id = upload.get("public_id");
 
-            if (productService.CreateProduct(productName, stockQuantity, price, description, upload.get("url"), public_id,
+            if (productService.CreateProduct(productName, 0, price, description, upload.get("url"), public_id,
                     (int) id_category, (int) id_environment, (int) id_supplier, (int) id_activity, (int) id_brand, (int) id_unit) ==1) {
 
                 Notification note = new Notification();
@@ -225,31 +240,32 @@ public class ProductController {
     @PostMapping("/update/{id}")
     public ResponseEntity<Object> updateProduct(
             @PathVariable long id,
-            @RequestParam(value = "stockQuantity", required = false) String stockQuantity,
-            @RequestParam(value = "price", required = false) String price,
-            @RequestParam(value = "description", required = false) String description,
-            @RequestParam(value = "productName", required = false) String productName,
-//            @RequestParam(value = "category_id", required = false) String category_id,
-            @RequestParam(value = "image", required = false) MultipartFile multipartFile
+            @RequestParam("price") float price,
+            @RequestParam("description") String description,
+            @RequestParam("productName") String productName,
+            @RequestParam("category_id") long id_category,
+            @RequestParam("id_environment") long id_environment,
+            @RequestParam("id_supplier") long id_supplier,
+            @RequestParam("id_activity") long id_activity,
+            @RequestParam("id_brand") long id_brand,
+            @RequestParam("id_unit") long id_unit,
+            @RequestParam(value = "image") MultipartFile multipartFile
 
     ) {
 
         try {
-
             Product product = productService.getProductById(id).get();
-            if (!stockQuantity.isEmpty()) {
-                product.setStockQuantity(Integer.parseInt(stockQuantity));
-            }
-            if (!price.isEmpty()) {
-                product.setPrice(Float.parseFloat(price));
-            }
-            if (!description.isEmpty()) {
+                product.setPrice(price);
                 product.setDescription(description);
-            }
-            if (!productName.isEmpty()) {
+                product.setCategory(categoryService.findById(id_category).get());
+                product.setEnvironment(environmentService.findById(id_environment));
+                product.setSupplier(supplierService.findById(id_supplier));
+                product.setActivity(activityService.findById(id_activity));
+                product.setBrand(brandService.findById(id_brand));
+                product.setUnit(unitService.findById(id_unit));
+
                 product.setProductName(productName);
-            }
-            if (multipartFile != null) {
+            if (multipartFile.isEmpty()==false) {
 
                 fileUpload.deleteFile(product.getPublicId());
 
