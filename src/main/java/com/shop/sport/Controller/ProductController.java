@@ -169,10 +169,6 @@ public class ProductController {
             data.put("quanti_sold", 12);
             data.put("star", 1);
 //            data.put("star", productService.getStarByIdProduct(id));
-
-
-
-
                    return response.generateResponse(" product successfully", HttpStatus.OK, data);
 
         } catch (Exception e) {

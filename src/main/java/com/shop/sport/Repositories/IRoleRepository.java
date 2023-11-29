@@ -1,13 +1,10 @@
 package com.shop.sport.Repositories;
 
-import com.shop.sport.Entity.CartItem;
 import com.shop.sport.Entity.Role;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
+@Repository
 public interface IRoleRepository extends CrudRepository<Role, Long> {
 
-    @Override
-    Optional<Role> findById(Long aLong);
 }

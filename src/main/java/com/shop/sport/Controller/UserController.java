@@ -333,13 +333,14 @@ public class UserController {
 
             RegisterRequest registerRequest = new RegisterRequest();
             registerRequest.setEmail(body.get("email"));
-            registerRequest.setRole(roleService.getRoleById(2));
+
             registerRequest.setUsername(body.get("email"));
             String randomPassWord = Utils.generateRandomString(6);
             registerRequest.setPassword(randomPassWord);
+//            System.out.println(registerRequest.getRole());
 
 
-            if (authenticationService.checkUserExist(registerRequest.getUsername()))
+            if (authenticationService.checkUserExistEmailandUserName(registerRequest.getUsername(), registerRequest.getEmail()))
                 return response.generateResponse("User exist!", HttpStatus.BAD_REQUEST, null);
 
 
@@ -352,7 +353,8 @@ public class UserController {
                 details.setRecipient(registerRequest.getEmail());
                 Boolean status
                         = emailService.sendSimpleMail(details);;
-                User users = authenticationService.register(registerRequest);
+
+                User users = authenticationService.registerEmployee(registerRequest);
                 return response.generateResponse("Provide accout Successfully !", HttpStatus.OK, users);
             } catch (Exception e) {
                 return response.generateResponse("sent mail failed Provide accout failed" + e.getMessage(), HttpStatus.BAD_REQUEST, true);

@@ -17,6 +17,10 @@ public class RoleService {
        return false;
     }
 
+    public Role findById(long id){
+        return iRoleRepository.findById(id).get();
+    }
+
     public Role getRoleById(long id) {
         try {
             return iRoleRepository.findById(id).get();

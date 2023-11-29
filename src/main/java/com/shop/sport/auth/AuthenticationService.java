@@ -38,6 +38,17 @@ public class AuthenticationService {
         return  false;
 
     }
+
+    public Boolean checkUserExistEmailandUserName(String userName, String email){
+        for (User user: getAllUsers()
+        ) {
+            if( ( userName.equals(user.getUsername()) || email.equals(user.getEmail())  )&& user.getStatus() )
+                return true;
+        }
+        return  false;
+
+    }
+
     public List<String> getIdByUserName(String userName){
         List<String> result = new ArrayList<>();
         for (User user: getAllUsers()
@@ -65,6 +76,26 @@ public class AuthenticationService {
 
         userRepository.save(user);
             return user;
+
+//        var jwtToken = jwtService.generateToken(user);
+//        return AuthenticationResponse.builder()
+//                .token(jwtToken)
+//                .build();
+
+    }
+
+    public User registerEmployee(RegisterRequest request) {
+        User user = User.builder()
+                .avatarUrl("https://res.cloudinary.com/dzljztsyy/image/upload/v1699149880/shop_sport/avatart%20default/avatar_vxzerq.jpg")
+                .status(true)
+                .username(request.getUsername())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(roleService.getRoleById(2))
+                .build();
+
+        userRepository.save(user);
+        return user;
 
 //        var jwtToken = jwtService.generateToken(user);
 //        return AuthenticationResponse.builder()
