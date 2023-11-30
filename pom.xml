@@ -11,7 +11,7 @@
 	<groupId>com.shop</groupId>
 	<artifactId>sport</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>sport</name>
+	<name>sportver2</name>
 	<description>Project manager shop spring boot by Nho Nam</description>
 	<properties>
 		<java.version>20</java.version>
@@ -61,7 +61,8 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<optional>true</optional>
+			<version>1.18.30</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -102,5 +103,7 @@
 			</plugin>
 		</plugins>
 	</build>
+
+
 
 </project>

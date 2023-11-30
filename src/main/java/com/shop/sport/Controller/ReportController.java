@@ -58,7 +58,7 @@ public class ReportController {
 
     }
 
-    @GetMapping("/report-excel")
+    @PostMapping("/report-excel")
     public ResponseEntity<Object> Report(
             @RequestBody Map<String, String> body
     ) {

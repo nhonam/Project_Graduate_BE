@@ -19,6 +19,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -217,6 +220,13 @@ public class OrderEmployeeController {
             }
             OrderStatus orderStatus = orderStatusService.findOrderStatusById(idStatusOrder);
             order.setOrderStatus(orderStatus);
+            if(order.getOrderStatus().getId()==2 && idStatusOrder==3) {
+                LocalDate currentDate = LocalDate.now();
+                // Định dạng thời gian theo "yyyy-MM-dd"
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                String formattedDate = currentDate.format(formatter);
+                order.setOrderDate(Date.valueOf(formattedDate));
+            }
             orderService.saveToDB(order);
             return response.generateResponse("chuyển trạng thái thành công", HttpStatus.OK, order);
 
