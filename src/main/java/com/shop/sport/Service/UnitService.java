@@ -1,5 +1,7 @@
 package com.shop.sport.Service;
 
+import com.shop.sport.DTO.Report;
+import com.shop.sport.DTO.SellestDTO;
 import com.shop.sport.Entity.Activity;
 import com.shop.sport.Entity.Unit;
 import com.shop.sport.Repositories.IActivityRepository;
@@ -57,5 +59,20 @@ public class UnitService {
         }
 
 
+    }
+
+
+    ///thống kê
+
+    public String listReportMonth(int year){
+        return iUnitRepository.ThongKeSoLuongSanPhamBanRa(year);
+    }
+
+    public List<SellestDTO> top_sanpham_banchay(int month, int year){
+        return iUnitRepository.top_sanpham_banchay(month,year);
+    }
+
+    public List<Report> ThongTinBanHangTheoKhoangThoiGian(String start, String end){
+        return iUnitRepository.ThongTinBanHangTheoKhoangThoiGian(start,end);
     }
 }

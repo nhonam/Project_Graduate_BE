@@ -61,7 +61,9 @@ public class OrderController {
     }
 
     @GetMapping("/quatity-sell")
-    public ResponseEntity<Object> getSoLuongSpdaban() {
+    public ResponseEntity<Object> getSoLuongSpdaban(
+
+    ) {
 
 
         try {

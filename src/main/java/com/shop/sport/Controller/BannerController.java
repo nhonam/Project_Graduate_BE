@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1/banner")
+@RequestMapping("/api/v1/report-admin")
 public class BannerController {
     Response response = Response.getInstance();
     @Autowired
