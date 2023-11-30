@@ -219,17 +219,23 @@ public class OrderEmployeeController {
             }else if (order.getOrderStatus().getId()==4 && (idStatusOrder==3||idStatusOrder==2|| idStatusOrder==1)){
                 return response.generateResponse("Chuyển trạng thái sai !!!", HttpStatus.OK, 0);
             }
-            OrderStatus orderStatus = orderStatusService.findOrderStatusById(idStatusOrder);
-            order.setOrderStatus(orderStatus);
-            if(order.getOrderStatus().getId()==2 && idStatusOrder==3) {
+
+            // nếu bil; =0 thì ko xuất hóa đơn bằng 1thifif xuất hóa đơn
+            if(order.getOrderStatus().getId()==1 && idStatusOrder==2) { //xuất bill
                 LocalDate currentDate = LocalDate.now();
                 // Định dạng thời gian theo "yyyy-MM-dd"
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 String formattedDate = currentDate.format(formatter);
                 order.setOrderDate(Date.valueOf(formattedDate));
+                OrderStatus orderStatus = orderStatusService.findOrderStatusById(idStatusOrder);
+                order.setOrderStatus(orderStatus);
+                orderService.saveToDB(order);
+                return response.generateResponse("1", HttpStatus.OK, order);
+
             }
-            JSONObject res = new JSONObject();
-//            res.put()
+            OrderStatus orderStatus = orderStatusService.findOrderStatusById(idStatusOrder);
+            order.setOrderStatus(orderStatus);
+
             orderService.saveToDB(order);
             return response.generateResponse("chuyển trạng thái thành công", HttpStatus.OK, order);
 
