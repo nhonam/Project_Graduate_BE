@@ -43,7 +43,7 @@ public class ReportController {
 
     }
 
-    @GetMapping("/best-sell")
+    @PostMapping("/best-sell")
     public ResponseEntity<Object> createActivity(
             @RequestBody Map<String, String> body
     ) {

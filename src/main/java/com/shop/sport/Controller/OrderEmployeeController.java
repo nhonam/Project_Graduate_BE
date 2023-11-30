@@ -14,6 +14,7 @@ import com.shop.sport.Response.Response;
 import com.shop.sport.Service.OrderService;
 import com.shop.sport.Service.OrderStatusService;
 import com.shop.sport.Service.UserService;
+import org.cloudinary.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -227,6 +228,8 @@ public class OrderEmployeeController {
                 String formattedDate = currentDate.format(formatter);
                 order.setOrderDate(Date.valueOf(formattedDate));
             }
+            JSONObject res = new JSONObject();
+//            res.put()
             orderService.saveToDB(order);
             return response.generateResponse("chuyển trạng thái thành công", HttpStatus.OK, order);
 
