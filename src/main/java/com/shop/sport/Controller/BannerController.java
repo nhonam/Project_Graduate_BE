@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1/report-admin")
+@RequestMapping("/api/v1/banner")
 public class BannerController {
     Response response = Response.getInstance();
     @Autowired
@@ -105,7 +105,6 @@ public class BannerController {
 
 //    khi tạo category thì phải chọn những mô tả nổi bật special của category đó
     @PostMapping("/add")
-    @Transactional
     public ResponseEntity<Object> createCategory(
             @RequestParam("idProduct") long idProduct,
             @RequestParam(value = "image" , required = true) MultipartFile multipartFile
@@ -113,8 +112,6 @@ public class BannerController {
     ) throws IOException {
         String public_id ="";
         try {
-
-
 
             Banner category = new Banner();
             category.setProduct(productService.getProductById(idProduct).get());
