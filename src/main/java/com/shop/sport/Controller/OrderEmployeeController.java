@@ -14,6 +14,8 @@ import com.shop.sport.Response.Response;
 import com.shop.sport.Service.OrderService;
 import com.shop.sport.Service.OrderStatusService;
 import com.shop.sport.Service.UserService;
+import com.shop.sport.Utils.PushNoti.FirebaseMessageService;
+import com.shop.sport.Utils.PushNoti.Notification;
 import org.cloudinary.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,6 +47,8 @@ public class OrderEmployeeController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private FirebaseMessageService firebaseMessageService;
 
 
     // get chi tiết đơn hàng
@@ -230,6 +234,42 @@ public class OrderEmployeeController {
                 OrderStatus orderStatus = orderStatusService.findOrderStatusById(idStatusOrder);
                 order.setOrderStatus(orderStatus);
                 orderService.saveToDB(order);
+
+                try {
+                    EmailDetails details = new EmailDetails();
+                    details.setSubject("ĐẶT MUA HÀNG THÀNH CÔNG !!!");
+                    details.setMsgBody("Bạn đã đặt mua sản phẩm :" +
+                            "\n\nĐơn hàng sẽ sớm được gửi cho bạn, cảm ơn quý khách hàng đã tin tưởng và ủng hộ Shop");
+                    details.setRecipient(body.get("email"));
+                    Boolean status
+                            = emailService.sendSimpleMail(details);;
+
+
+                } catch (Exception e) {
+                }
+
+                //push noti
+                try {
+                    User user = userService.getUserById(Long.parseLong(body.get("id_user")));
+                    if(user.getTokenDevice()==null ||user.getTokenDevice()==""){
+                        return response.generateResponse("1", HttpStatus.OK, order);
+
+                    }
+
+                    Notification note = new Notification();
+                    note.setContent(body.get("content"));
+                    note.setSubject(body.get("title"));
+                    if(body.get("image_url")==null || body.get("image_url")=="")
+                        note.setImage("https://res.cloudinary.com/dzljztsyy/image/upload/v1700793742/shop_sport/avatart%20default/logoshop_gtr9tk.png");
+                    else
+                        note.setImage(body.get("image_url"));
+
+                    firebaseMessageService.sendNotification(note, user.getTokenDevice());
+
+
+                } catch (Exception e) {
+                    return response.generateResponse("1", HttpStatus.OK, order);                }
+
                 return response.generateResponse("1", HttpStatus.OK, order);
 
             }
