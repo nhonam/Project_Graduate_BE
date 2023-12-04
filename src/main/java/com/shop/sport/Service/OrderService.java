@@ -1,9 +1,6 @@
 package com.shop.sport.Service;
 
-import com.shop.sport.DTO.BestSell;
-import com.shop.sport.DTO.HoaDon;
-import com.shop.sport.DTO.OrderDTO;
-import com.shop.sport.DTO.OrderItemDTO;
+import com.shop.sport.DTO.*;
 import com.shop.sport.Entity.Order1;
 import com.shop.sport.Entity.OrderItem;
 import com.shop.sport.Repositories.IOrderItem;
@@ -31,8 +28,16 @@ public class OrderService {
         return  orderItemRepo.get_all_evaluate_by_id_product(id_order);
     }
 
+    public List<DonNhapHang> getAllDonNhapHang(String start, String end) {
+        return  orderItemRepo.getall_don_nhap_hang(start, end);
+    }
+
     public int NhapHang(String productIds, String quantities, String prices, long id_employee) {
         return  orderItemRepo.nhap_hang(productIds,quantities, prices, id_employee);
+    }
+
+    public List<ImportProductDetail> get_import_product_detail(long id) {
+        return  orderItemRepo.get_import_product_detail(id);
     }
 
 

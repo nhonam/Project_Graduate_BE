@@ -1,9 +1,6 @@
 package com.shop.sport.Controller;
 
-import com.shop.sport.DTO.BestSell;
-import com.shop.sport.DTO.HoaDon;
-import com.shop.sport.DTO.OrderDTO;
-import com.shop.sport.DTO.OrderItemDTO;
+import com.shop.sport.DTO.*;
 import com.shop.sport.Entity.Order1;
 import com.shop.sport.Entity.OrderItem;
 import com.shop.sport.Entity.OrderStatus;
@@ -88,6 +85,42 @@ public class OrderEmployeeController {
 
         }
     }
+
+    //get all danh sách hóa đơn theo khoảng thời gian
+    @PostMapping ("/all-import-product")
+    public ResponseEntity<Object> getAllImport_product(
+            @RequestBody Map<String, String> body
+    ) {
+        try {
+
+            List<DonNhapHang> result = orderService.getAllDonNhapHang(body.get("start"), body.get("end"));
+
+                return response.generateResponse("get all đơn nhập hàng  Successfully", HttpStatus.OK, result);
+
+
+        }catch (Exception e) {
+            return response.generateResponse("get all đơn nhập hàng  failed"+e.getMessage(), HttpStatus.OK, 0 );
+
+        }
+    }
+
+    @GetMapping ("/import-product/{id}")
+    public ResponseEntity<Object> getImportProductDetailById(
+            @PathVariable("id") long id
+    ) {
+        try {
+
+            List<ImportProductDetail> result = orderService.get_import_product_detail(id);
+
+            return response.generateResponse("get đơn nhập hàng  Successfully", HttpStatus.OK, result);
+
+
+        }catch (Exception e) {
+            return response.generateResponse("get  đơn nhập hàng  failed"+e.getMessage(), HttpStatus.OK, 0 );
+
+        }
+    }
+
 
 
     // lấy tất cả các đơn hàng theo ngày đặt từ mới nhất tới cũ nhất

@@ -4,12 +4,15 @@ import com.shop.sport.DTO.BestSell;
 import com.shop.sport.DTO.HoaDon;
 import com.shop.sport.DTO.OrderDTO;
 import com.shop.sport.Entity.Order1;
+import com.shop.sport.Entity.OrderItem;
+import com.shop.sport.Entity.Product;
 import com.shop.sport.Entity.User;
 import com.shop.sport.MailService.EmailDetails;
 import com.shop.sport.MailService.EmailService;
 import com.shop.sport.Response.Response;
 import com.shop.sport.Service.OrderService;
 import com.shop.sport.Service.OrderStatusService;
+import com.shop.sport.Service.ProductService;
 import com.shop.sport.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +32,9 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private ProductService productService;
 
     @Autowired
     private OrderStatusService orderStatusService;
@@ -175,6 +181,7 @@ public class OrderController {
         }
     }
 
+    //api dành cho khách hàng hủy
     @GetMapping("/cancel-order/{id}")
     public ResponseEntity<Object> deleteOrder(
             @PathVariable long id
@@ -185,6 +192,21 @@ public class OrderController {
 
             Order1 order = orderService.findByID(id);
             order.setOrderStatus(orderStatusService.findOrderStatusById(5)); // 5 là id của CANCEL trong bảng order_status
+
+
+            List<OrderItem> list = order.getOrderItems().stream().toList();
+            Product product ;
+
+            for (int i = 0; i< list.size(); i++) {
+                product = list.get(i).getProduct();
+                int quantityCurrent = product.getStockQuantity();
+
+                product.setStockQuantity((int) (quantityCurrent+ list.get(i).getQuantity()));
+                productService.createProduct(product);
+
+            }
+
+
             orderService.saveToDB(order);
             return response.generateResponse("cancel order successfully", HttpStatus.OK, 1);
         } catch (Exception e) {

@@ -1,4 +1,4 @@
-//package com.shop.sport.Entity;
+ //package com.shop.sport.Entity;
 //
 //import com.fasterxml.jackson.annotation.JsonIgnore;
 //import jakarta.persistence.*;

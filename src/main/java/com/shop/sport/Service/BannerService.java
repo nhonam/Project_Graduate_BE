@@ -1,10 +1,7 @@
 package com.shop.sport.Service;
 
 import com.shop.sport.Entity.Banner;
-import com.shop.sport.Entity.Category;
-import com.shop.sport.Entity.ProductRelation;
 import com.shop.sport.Repositories.IBannerRepository;
-import com.shop.sport.Repositories.ICategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -47,7 +47,6 @@ public class ProductController {
     private EnvironmentService environmentService;
 
 
-
     @Autowired
     private UserService userService;
 
@@ -137,7 +136,7 @@ public class ProductController {
             public_id = upload.get("public_id");
 
             if (productService.CreateProduct(productName, 0, price, description, upload.get("url"), public_id,
-                    (int) id_category, (int) id_environment, (int) id_supplier, (int) id_activity, (int) id_brand, (int) id_unit) ==1) {
+                    (int) id_category, (int) id_environment, (int) id_supplier, (int) id_activity, (int) id_brand, (int) id_unit) == 1) {
 
                 Notification note = new Notification();
                 note.setContent("Mời bạn ghé thăm !!! ");
@@ -147,10 +146,9 @@ public class ProductController {
                 List<User> userList = userService.getAllUserByRole("CUSTOMER");
 
                 for (int i = 0; i < userList.size(); i++) {
-                    if(userList.get(i).getTokenDevice()!=null || userList.get(i).getTokenDevice()!="")
+                    if (userList.get(i).getTokenDevice() != null || userList.get(i).getTokenDevice() != "")
                         firebaseMessageService.sendNotification(note, userList.get(i).getTokenDevice());
                 }
-
 
 
                 return response.generateResponse("create product Successfully", HttpStatus.OK, "done");
@@ -180,11 +178,21 @@ public class ProductController {
 
             Map<String, Object> data = new HashMap<>();
             data.put("product", product);
-//            data.put("quanti_sold", productService.QuantiProductSell(id));
-            data.put("quanti_sold", 12);
-            data.put("star", 1);
-//            data.put("star", productService.getStarByIdProduct(id));
-                   return response.generateResponse(" product successfully", HttpStatus.OK, data);
+            try {
+                data.put("quanti_sold", productService.QuantiProductSell(id));
+            } catch (Exception e) {
+                data.put("quanti_sold", 0);
+
+            }
+
+            try {
+                data.put("star", productService.getStarByIdProduct(id));
+            } catch (Exception e) {
+                data.put("star", 0);
+
+            }
+
+            return response.generateResponse(" product successfully", HttpStatus.OK, data);
 
         } catch (Exception e) {
             return response.generateResponse(" product failed", HttpStatus.OK, null);
@@ -255,17 +263,17 @@ public class ProductController {
 
         try {
             Product product = productService.getProductById(id).get();
-                product.setPrice(price);
-                product.setDescription(description);
-                product.setCategory(categoryService.findById(id_category).get());
-                product.setEnvironment(environmentService.findById(id_environment));
-                product.setSupplier(supplierService.findById(id_supplier));
-                product.setActivity(activityService.findById(id_activity));
-                product.setBrand(brandService.findById(id_brand));
-                product.setUnit(unitService.findById(id_unit));
+            product.setPrice(price);
+            product.setDescription(description);
+            product.setCategory(categoryService.findById(id_category).get());
+            product.setEnvironment(environmentService.findById(id_environment));
+            product.setSupplier(supplierService.findById(id_supplier));
+            product.setActivity(activityService.findById(id_activity));
+            product.setBrand(brandService.findById(id_brand));
+            product.setUnit(unitService.findById(id_unit));
 
-                product.setProductName(productName);
-            if (multipartFile.isEmpty()==false) {
+            product.setProductName(productName);
+            if (multipartFile.isEmpty() == false) {
 
                 fileUpload.deleteFile(product.getPublicId());
 

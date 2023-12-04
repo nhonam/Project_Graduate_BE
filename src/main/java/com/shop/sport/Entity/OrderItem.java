@@ -17,7 +17,7 @@ public class OrderItem {
     private long id;
 
     @Column(name = "quantity")
-    private long productId;
+    private long quantity;
 
     @Column(name = "price")
     private float price;

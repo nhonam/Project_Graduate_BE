@@ -57,13 +57,13 @@ public class Product {
     @JsonIgnore
     private Collection<OrderItem> orderItems;
 
-    @OneToMany(mappedBy = "productTarget", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private Collection<ProductRelation> productRelationTarget;
-
-    @OneToMany(mappedBy = "productCurent", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private Collection<ProductRelation> productRelationCurrent;
+//    @OneToMany(mappedBy = "productTarget", cascade = CascadeType.ALL)
+//    @JsonIgnore
+//    private Collection<ProductRelation> productRelationTarget;
+//
+//    @OneToMany(mappedBy = "productCurent", cascade = CascadeType.ALL)
+//    @JsonIgnore
+//    private Collection<ProductRelation> productRelationCurrent;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @JsonIgnore
