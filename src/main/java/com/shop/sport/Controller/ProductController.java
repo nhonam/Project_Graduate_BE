@@ -54,6 +54,21 @@ public class ProductController {
     private FirebaseMessageService firebaseMessageService;
 
 
+    @GetMapping("/find-by-name/{name}")
+    public ResponseEntity<Object> getAllProduct(
+            @PathVariable("name") String nameProduct
+    ) {
+        try {
+            Product product = productService.oneProductByName(nameProduct);
+
+            return response.generateResponse(" Successfully", HttpStatus.OK, product);
+
+        } catch (Exception e) {
+            return response.generateResponse(" fail" + e.getMessage(), HttpStatus.BAD_REQUEST, null);
+
+        }
+    }
+
     @GetMapping("/allProduct")
     public ResponseEntity<Object> getAllProduct() {
         try {

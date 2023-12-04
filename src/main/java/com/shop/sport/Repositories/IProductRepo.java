@@ -17,8 +17,13 @@ public interface IProductRepo extends CrudRepository<Product, Long> {
     @Query(value = "SELECT u FROM Product u WHERE u.status = true ")
     List<Product> findAllProduct();
 
+
+
     @Query(value = "CALL check_delete_product(:idProduct);", nativeQuery = true)
     Long check_delete_product(@Param("idProduct") long id);
+
+    @Query(value = "CALL find_product_by_name(:name);", nativeQuery = true)
+    Product find_product_by_name(@Param("name") String name);
 
     @Query(value = "CALL AddProduct(:product_name,:stock_quantity,:price,:description,:image_url,:public_id," +
             ":category_id,:id_environment,:id_supplier,:id_activity,:id_brand, :id_unit);", nativeQuery = true)

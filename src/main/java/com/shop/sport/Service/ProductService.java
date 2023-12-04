@@ -6,6 +6,7 @@ import com.shop.sport.Repositories.IProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.PublicKey;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +15,10 @@ public class ProductService {
 
     @Autowired
     private IProductRepo iProductRepo;
+
+    public Product oneProductByName(String nameProduct){
+       return iProductRepo.find_product_by_name(nameProduct);
+    }
 
     public List<Product> getAllProduct() {
         return iProductRepo.findAllProduct();

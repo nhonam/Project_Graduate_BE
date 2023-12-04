@@ -20,22 +20,22 @@ public class EmailController {
 
     Response response = Response.getInstance();
 
-    @Autowired private EmailService emailService;
+    @Autowired
+    private EmailService emailService;
 
     // Sending a simple Email
     @PostMapping("/sendMail-simple")
     public ResponseEntity<Object>
-    sendMail(@RequestBody EmailDetails details)
-    {
+    sendMail(@RequestBody EmailDetails details) {
         try {
             Boolean status
                     = emailService.sendSimpleMail(details);
             if (status)
-            return response.generateResponse("sent mail successfully", HttpStatus.OK, status);
+                return response.generateResponse("sent mail successfully", HttpStatus.OK, status);
             else return response.generateResponse("sent mail fail", HttpStatus.OK, status);
 
-        }catch (Exception e) {
-            return response.generateResponse("sent mail fail"+e.getMessage(), HttpStatus.BAD_REQUEST, true);
+        } catch (Exception e) {
+            return response.generateResponse("sent mail fail" + e.getMessage(), HttpStatus.BAD_REQUEST, true);
         }
 
     }
@@ -43,8 +43,7 @@ public class EmailController {
     // Sending email with attachment
     @PostMapping("/sendMailWithAttachment")
     public ResponseEntity<Object> sendMailWithAttachment(
-            @RequestBody EmailDetails details)
-    {
+            @RequestBody EmailDetails details) {
 
         try {
             Boolean status
@@ -53,8 +52,10 @@ public class EmailController {
                 return response.generateResponse("sent mail successfully", HttpStatus.OK, status);
             else return response.generateResponse("sent mail fail", HttpStatus.OK, status);
 
-        }catch (Exception e) {
-            return response.generateResponse("sent mail fail"+e.getMessage(), HttpStatus.BAD_REQUEST, true);
+        } catch (Exception e) {
+            return response.generateResponse("sent mail fail" + e.getMessage(), HttpStatus.BAD_REQUEST, true);
         }
     }
+
+
 }
