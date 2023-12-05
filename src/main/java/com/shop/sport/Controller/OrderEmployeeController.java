@@ -252,7 +252,7 @@ public class OrderEmployeeController {
                 // Định dạng thời gian theo "yyyy-MM-dd"
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 String formattedDate = currentDate.format(formatter);
-                order.setOrderDate(Date.valueOf(formattedDate));
+                order.setPaymentDate(Date.valueOf(formattedDate));
                 OrderStatus orderStatus = orderStatusService.findOrderStatusById(idStatusOrder);
                 order.setOrderStatus(orderStatus);
                 orderService.saveToDB(order);
