@@ -31,8 +31,10 @@ int insert_to_order_order_item(@Param("shipping_adress") String shipping_adress,
                          @Param("ngnhan") String ngnhan,
                          @Param("productIds") String productIds,
                          @Param("quantities") String quantities);
-    @Query(value = "CALL getOrder_byIdUser(:id_User)", nativeQuery = true)
-    List<OrderDTO> getOrder_byIdUser(@Param("id_User") long id_User);
+    @Query(value = "CALL getOrder_byIdUser_by_date(:id_User,:start,:end)", nativeQuery = true)
+    List<OrderDTO> getOrder_byIdUser_by_date(@Param("id_User") long id_User,
+                                             @Param("start") String start,
+                                             @Param("end") String end);
 
     @Query(value = "CALL get_all_order_by_employee()", nativeQuery = true)
     List<OrderDTO> get_all_order_by_employee();

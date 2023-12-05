@@ -61,8 +61,8 @@ public class OrderService {
         return  orderReopository.findById(id).orElse(null);
     }
 
-    public List<OrderDTO> getOrder_byIdUser(long idUser) {
-            return orderReopository.getOrder_byIdUser(idUser);
+    public List<OrderDTO> getOrder_byIdUser_by_date(long idUser, String start, String end) {
+            return orderReopository.getOrder_byIdUser_by_date(idUser, start, end);
 
     }
     public List<Order1> getAllOrder() {

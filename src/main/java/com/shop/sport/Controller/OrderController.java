@@ -81,10 +81,11 @@ public class OrderController {
     }
     // lấy những sản phẩm đã mua ( đã thanh toán hoặc shop đã xác nhận)
     @GetMapping ("boughts/{id}")
-    public ResponseEntity<Object> getOrderBougth(@PathVariable("id") long iduser) {
+    public ResponseEntity<Object> getOrderBougth(@PathVariable("id") long iduser,
+                                                 @RequestBody Map<String, String> body) {
         try {
 
-            List<OrderDTO> list = orderService.getOrder_byIdUser(iduser);
+            List<OrderDTO> list = orderService.getOrder_byIdUser_by_date(iduser, body.get("date_start"), body.get("date_end"));
             List<OrderDTO> listResult = new ArrayList<>();
             for (OrderDTO item : list
             ) {
@@ -104,10 +105,11 @@ public class OrderController {
 
     // lấy những sản phẩm chờ shop xác nhận
     @GetMapping ("wait-confirm/{id}")
-    public ResponseEntity<Object> getOrderWaitConfirm(@PathVariable("id") long iduser) {
+    public ResponseEntity<Object> getOrderWaitConfirm(@PathVariable("id") long iduser,
+                                                      @RequestBody Map<String, String> body) {
         try {
 
-            List<OrderDTO> list = orderService.getOrder_byIdUser(iduser);
+            List<OrderDTO> list = orderService.getOrder_byIdUser_by_date(iduser, body.get("date_start"), body.get("date_end"));
             List<OrderDTO> listResult = new ArrayList<>();
             for (OrderDTO item : list
                  ) {
@@ -141,11 +143,13 @@ public class OrderController {
     }
 
 
-    @GetMapping ("/by-user/{id}")
-    public ResponseEntity<Object> getOrderByIdUser(@PathVariable("id") long iduser) {
+    //lấy toàn bộ đơn hàng của user theo id và theo khoảng thời gian lựa chọn
+    @PostMapping ("/by-user/{id}")
+    public ResponseEntity<Object> getOrderByIdUser(@PathVariable("id") long iduser,
+                                                   @RequestBody Map<String, String> body) {
         try {
 
-            List<OrderDTO> list = orderService.getOrder_byIdUser(iduser);
+            List<OrderDTO> list = orderService.getOrder_byIdUser_by_date(iduser, body.get("date_start"), body.get("date_end"));
             return response.generateResponse("get list order item Successfully", HttpStatus.OK, list);
 
         }catch (Exception e) {

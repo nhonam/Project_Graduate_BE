@@ -24,6 +24,10 @@ public class ProductService {
         return iProductRepo.findAllProduct();
     }
 
+    public List<Product> getAllProductAdmin() {
+        return iProductRepo.findAllProductAdmin();
+    }
+
     public Product findProductById(long id) {
         return iProductRepo.findById(id).get();
     }

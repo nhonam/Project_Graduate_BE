@@ -171,18 +171,7 @@ public class OrderEmployeeController {
     }
 
 
-    @GetMapping ("/by-user/{id}")
-    public ResponseEntity<Object> getOrderByIdUser(@PathVariable("id") long iduser) {
-        try {
 
-            List<OrderDTO> list = orderService.getOrder_byIdUser(iduser);
-            return response.generateResponse("get list order item Successfully", HttpStatus.OK, list);
-
-        }catch (Exception e) {
-            return response.generateResponse("get list order item failed"+e.getMessage(), HttpStatus.OK, 0 );
-
-        }
-    }
 
     @GetMapping ("/orders")
     public ResponseEntity<Object> getOrdersByEmployee() {
@@ -274,8 +263,9 @@ public class OrderEmployeeController {
                     details.setMsgBody("Bạn đã đặt mua sản phẩm :" +
                             "\n\nĐơn hàng sẽ sớm được gửi cho bạn, cảm ơn quý khách hàng đã tin tưởng và ủng hộ Shop");
                     details.setRecipient(body.get("email"));
+                    details.setAttachment("\"C:\\Users\\nhona\\OneDrive\\Máy tính\\Nam\\image\\empty-cart.jpg\"");
                     Boolean status
-                            = emailService.sendSimpleMail(details);;
+                            = emailService.sendMailWithAttachment(details);;
 
 
                 } catch (Exception e) {

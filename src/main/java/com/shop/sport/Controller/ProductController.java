@@ -1,7 +1,6 @@
 package com.shop.sport.Controller;
 
 import com.shop.sport.Entity.Product;
-import com.shop.sport.Entity.Unit;
 import com.shop.sport.Entity.User;
 import com.shop.sport.Response.Response;
 import com.shop.sport.Service.*;
@@ -82,6 +81,19 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/allProduct-admin")
+    public ResponseEntity<Object> getAllProductAdmin() {
+        try {
+            List<Product> list = productService.getAllProductAdmin();
+
+            return response.generateResponse("Get All product Successfully", HttpStatus.OK, list);
+
+        } catch (Exception e) {
+            return response.generateResponse("Get All product fail" + e.getMessage(), HttpStatus.BAD_REQUEST, null);
+
+        }
+    }
+
 
     @GetMapping("/best_sell")
     public ResponseEntity<Object> bestSellProduct() {
@@ -153,17 +165,7 @@ public class ProductController {
             if (productService.CreateProduct(productName, 0, price, description, upload.get("url"), public_id,
                     (int) id_category, (int) id_environment, (int) id_supplier, (int) id_activity, (int) id_brand, (int) id_unit) == 1) {
 
-                Notification note = new Notification();
-                note.setContent("Mời bạn ghé thăm !!! ");
-                note.setSubject("Sản phẩm mới của cửa hàng vừa ra mắt nhanh tay bạn ơi :>");
-                note.setImage(upload.get("url"));
 
-                List<User> userList = userService.getAllUserByRole("CUSTOMER");
-
-                for (int i = 0; i < userList.size(); i++) {
-                    if (userList.get(i).getTokenDevice() != null || userList.get(i).getTokenDevice() != "")
-                        firebaseMessageService.sendNotification(note, userList.get(i).getTokenDevice());
-                }
 
 
                 return response.generateResponse("create product Successfully", HttpStatus.OK, "done");
