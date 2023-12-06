@@ -2,6 +2,7 @@ package com.shop.sport.Controller;
 
 import com.shop.sport.Entity.Banner;
 import com.shop.sport.Entity.Category;
+import com.shop.sport.Entity.Product;
 import com.shop.sport.Response.Response;
 import com.shop.sport.Service.*;
 import jakarta.transaction.Transactional;
@@ -55,7 +56,7 @@ public class BannerController {
 
     }
 
-    @GetMapping("/update/{id}")
+    @PostMapping("/update/{id}")
     public ResponseEntity<Object> updateCategory(
             @PathVariable long id,
             @RequestParam(value="idProduct", required = false) long idProduct,
@@ -64,12 +65,11 @@ public class BannerController {
 
         try {
             Banner category = bannerService.findById(id).get();
-            if (category != null){
+            Product product = productService.findProductById(idProduct);
+            category.setProduct(product);
 
-                    category.setProduct(productService.getProductById(idProduct).get());
 
-
-                if (!file.isEmpty()) {
+                if (file != null) {
                     fileUpload.deleteFile(category.getPublic_id());
 
                     Map<String, String> upload = fileUpload.uploadFile(file);
@@ -77,11 +77,11 @@ public class BannerController {
                     category.setUrl_banner(upload.get("url"));
                     category.setPublic_id(upload.get("public_id"));
                 }
+                bannerService.createBanner(category);
 
                 return response.generateResponse("update banner Successfully", HttpStatus.OK, category);
-            }
 
-            return response.generateResponse("update banner failed", HttpStatus.BAD_REQUEST, category);
+
         } catch (Exception e) {
             return response.generateResponse("update banner failed"+e.getMessage(), HttpStatus.BAD_REQUEST, null);
         }

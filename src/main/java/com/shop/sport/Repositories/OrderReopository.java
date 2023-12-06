@@ -24,7 +24,7 @@ public interface OrderReopository extends CrudRepository<Order1, Long> {
 //                         @Param("quantities") String quantities);
 //    @Procedure(name = "getOrder_byIdUser")
 //    List<OrderDTO> getOrder_byIdUser(@Param("id_user") long id_user);
-@Query(value = "CALL  (:shipping_adress,:id_user,:phone,:ngnhan,:productIds,:quantities);", nativeQuery = true)
+@Query(value = "CALL  insert_to_order_order_item(:shipping_adress,:id_user,:phone,:ngnhan,:productIds,:quantities);", nativeQuery = true)
 int insert_to_order_order_item(@Param("shipping_adress") String shipping_adress,
                          @Param("id_user") long id_user,
                          @Param("phone") String phone,

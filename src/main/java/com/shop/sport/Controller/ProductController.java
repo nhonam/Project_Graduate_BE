@@ -274,7 +274,7 @@ public class ProductController {
             @RequestParam("id_activity") long id_activity,
             @RequestParam("id_brand") long id_brand,
             @RequestParam("id_unit") long id_unit,
-            @RequestParam(value = "image") MultipartFile multipartFile
+            @RequestParam(value = "image", required = false)  MultipartFile multipartFile
 
     ) {
 
@@ -290,7 +290,8 @@ public class ProductController {
             product.setUnit(unitService.findById(id_unit));
 
             product.setProductName(productName);
-            if (multipartFile.isEmpty() == false) {
+
+            if (multipartFile != null) {
 
                 fileUpload.deleteFile(product.getPublicId());
 
