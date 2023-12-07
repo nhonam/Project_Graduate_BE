@@ -1,6 +1,7 @@
 package com.shop.sport.Controller;
 
 import com.shop.sport.DTO.Report;
+import com.shop.sport.DTO.ReportDTO;
 import com.shop.sport.DTO.SellestDTO;
 import com.shop.sport.Entity.Unit;
 import com.shop.sport.Response.Response;
@@ -10,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +60,11 @@ public class ReportController {
         }
 
     }
+    public  String FormatPrice( Double price){
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        String formattedValue = formatter.format( Double.valueOf(String.format("%.0f", price)));
+        return formattedValue + "  VND";
+    }
 
     @PostMapping("/report-excel")
     public ResponseEntity<Object> Report(
@@ -65,8 +73,23 @@ public class ReportController {
         try {
 
             List<Report> list = unitService.ThongTinBanHangTheoKhoangThoiGian( body.get("start"), body.get("end"));
+            List<ReportDTO> result = new ArrayList<>();
+            ReportDTO reportDTO;
+            for (int i = 0; i < list.size(); i++) {
 
-            return response.generateResponse("create units succesfully", HttpStatus.OK, list);
+                 reportDTO = new ReportDTO();
+                 reportDTO.setTongDoanhThu( FormatPrice(Double.valueOf(list.get(i).getTongDoanhThu())) );
+                 reportDTO.setTongLoiNhuan( FormatPrice(Double.valueOf(list.get(i).getTongLoiNhuan())) );
+                 reportDTO.setTongChiPhi( FormatPrice(Double.valueOf(list.get(i).getTongChiPhi())) );
+                 reportDTO.setNgay( list.get(i).getNgay() );
+                 reportDTO.setTenSanPham( list.get(i).getTenSanPham() );
+                 reportDTO.setTongSoLuongBan( list.get(i).getTongSoLuongBan() );
+                 result.add(reportDTO);
+
+
+            }
+
+            return response.generateResponse("create units succesfully", HttpStatus.OK, result);
         } catch (Exception e) {
             return response.generateResponse("create units fail" + e.getMessage(), HttpStatus.BAD_REQUEST, null);
         }
