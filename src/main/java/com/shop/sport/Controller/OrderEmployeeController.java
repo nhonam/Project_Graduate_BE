@@ -228,18 +228,21 @@ public class OrderEmployeeController {
             if (order.getOrderStatus().getId() == 1 && idStatusOrder == 5) {
                 OrderStatus orderStatus = orderStatusService.findOrderStatusById(idStatusOrder);
                 order.setOrderStatus(orderStatus); // 5 là id của CANCEL trong bảng order_status
+                
                 orderService.saveToDB(order);
                 return response.generateResponse("Hủy đơn hàng thành công", HttpStatus.OK, order);
             }
 
             if ((idStatusOrder == 4 || idStatusOrder == 3 || idStatusOrder == 2 || idStatusOrder == 1) && order.getOrderStatus().getId() == 5) {
-                return response.generateResponse("Chuyển trạng thái sai !!!", HttpStatus.OK, 0);
+                return response.generateResponse("Chuyển trạng thái không hợp lệ !!!", HttpStatus.OK, 0);
             } else if (order.getOrderStatus().getId() == 2 && idStatusOrder == 1)
-                return response.generateResponse("Chuyển trạng thái sai !!!", HttpStatus.OK, 0);
+                return response.generateResponse("Chuyển trạng thái không hợp lệ  !!!", HttpStatus.OK, 0);
             else if (order.getOrderStatus().getId() == 3 && (idStatusOrder == 2 || idStatusOrder == 1)) {
-                return response.generateResponse("Chuyển trạng thái sai !!!", HttpStatus.OK, 0);
+                return response.generateResponse("Chuyển trạng thái không hợp lệ  !!!", HttpStatus.OK, 0);
             } else if (order.getOrderStatus().getId() == 4 && (idStatusOrder == 3 || idStatusOrder == 2 || idStatusOrder == 1)) {
-                return response.generateResponse("Chuyển trạng thái sai !!!", HttpStatus.OK, 0);
+                return response.generateResponse("Chuyển trạng thái không hợp lệ  !!!", HttpStatus.OK, 0);
+            } else if( order.getOrderStatus().getId()==4 && idStatusOrder ==5){
+                return response.generateResponse("Chuyển trạng thái không hợp lệ  !!!", HttpStatus.OK, 0);
             }
 
             // nếu bil; =0 thì ko xuất hóa đơn bằng 1thifif xuất hóa đơn
@@ -259,37 +262,16 @@ public class OrderEmployeeController {
                     details.setMsgBody("Bạn đã đặt mua sản phẩm :" +
                             "\n\nĐơn hàng sẽ sớm được gửi cho bạn, cảm ơn quý khách hàng đã tin tưởng và ủng hộ Shop");
                     details.setRecipient(body.get("email"));
-                    details.setAttachment("\"C:\\Users\\nhona\\OneDrive\\Máy tính\\Nam\\image\\empty-cart.jpg\"");
+//                    details.setAttachment("\"C:\\Users\\nhona\\OneDrive\\Máy tính\\Nam\\image\\empty-cart.jpg\"");
                     Boolean status
-                            = emailService.sendMailWithAttachment(details);
+                            = emailService.sendSimpleMail(details);
                     ;
 
 
                 } catch (Exception e) {
                 }
 
-                //push noti
-                try {
-                    User user = userService.getUserById(Long.parseLong(body.get("id_user")));
-                    if (user.getTokenDevice() == null || user.getTokenDevice() == "") {
-                        return response.generateResponse("1", HttpStatus.OK, order);
 
-                    }
-
-                    Notification note = new Notification();
-                    note.setContent(body.get("content"));
-                    note.setSubject(body.get("title"));
-                    if (body.get("image_url") == null || body.get("image_url") == "")
-                        note.setImage("https://res.cloudinary.com/dzljztsyy/image/upload/v1700793742/shop_sport/avatart%20default/logoshop_gtr9tk.png");
-                    else
-                        note.setImage(body.get("image_url"));
-
-                    firebaseMessageService.sendNotification(note, user.getTokenDevice());
-
-
-                } catch (Exception e) {
-                    return response.generateResponse("1", HttpStatus.OK, order);
-                }
 
                 return response.generateResponse("1", HttpStatus.OK, order);
 

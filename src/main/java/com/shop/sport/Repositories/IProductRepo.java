@@ -14,10 +14,10 @@ import java.util.List;
 @EnableJpaRepositories
 public interface IProductRepo extends CrudRepository<Product, Long> {
 
-    @Query(value = "SELECT u FROM Product u WHERE u.status = true ")
+    @Query(value = "SELECT u FROM Product u WHERE u.status = true and u.isDelete = false ")
     List<Product> findAllProduct();
 
-    @Query(value = "SELECT u FROM Product u")
+    @Query(value = "SELECT u FROM Product u where u.isDelete= false ")
     List<Product> findAllProductAdmin();
 
     @Query(value = "CALL check_delete_product(:idProduct);", nativeQuery = true)

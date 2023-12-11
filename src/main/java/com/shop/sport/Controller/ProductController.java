@@ -68,6 +68,8 @@ public class ProductController {
         }
     }
 
+
+
     @GetMapping("/allProduct")
     public ResponseEntity<Object> getAllProduct() {
         try {
@@ -166,6 +168,22 @@ public class ProductController {
                     (int) id_category, (int) id_environment, (int) id_supplier, (int) id_activity, (int) id_brand, (int) id_unit) == 1) {
 
 
+                for (int i = 0; i < userService.getAllUsers().size() ; i++) {
+
+                    //push noti
+                    try {
+                        Notification note = new Notification();
+                        note.setContent("Một sản phẩm mới sắp ra mắt mọi người cùng đón chờ nha "+ productName);
+                        note.setSubject("Sản phẩm sắp ra mắt");
+                        note.setImage(upload.get("url"));
+                        firebaseMessageService.sendNotification(note, userService.getAllUsers().get(i).getTokenDevice());
+
+                    } catch (Exception e) {
+
+                    }
+                }
+
+
 
 
                 return response.generateResponse("create product Successfully", HttpStatus.OK, "done");
@@ -233,6 +251,7 @@ public class ProductController {
             long isDel = productService.checkDelete(id);
             if (isDel == 1) {
                 product.setStatus(false);
+                product.setIsDelete(true);
 //            fileUpload.deleteFile(product.getPublicId());
                 productService.createProduct(product);
                 return response.generateResponse("delete product successfully", HttpStatus.OK, isDel);

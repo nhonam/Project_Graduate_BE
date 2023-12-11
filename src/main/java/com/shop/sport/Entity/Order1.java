@@ -24,6 +24,8 @@ public class Order1 {
     @Column(name = "order_date")
     private Date orderDate;
 
+
+
     @Column(name = "shipping_date")
     private Date shippingDate;
 

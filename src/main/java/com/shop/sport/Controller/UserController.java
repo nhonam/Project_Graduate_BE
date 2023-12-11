@@ -88,26 +88,28 @@ public class UserController {
 
         try {
             User users = userService.getUserById(id);
-            if (users.getTokenDevice()==null || users.getTokenDevice()==""|| users.getTokenDevice()!=body.get("fcm_token")){
-                users.setTokenDevice(body.get("fcm_token"));
-                userService.updateUser(users);
-
-                return response.generateResponse("Save device token successfully", HttpStatus.OK, users);
-            }
-
-            List<User> list = userService.getAllUsers();
-
-            for (int i = 0; i < list.size(); i++) {
-
-                if (users.getTokenDevice()==list.get(i).getTokenDevice()){
-                    return response.generateResponse("Device token is exsit", HttpStatus.BAD_REQUEST, users);
-                }
-                users.setTokenDevice(body.get("fcm_token"));
-                userService.updateUser(users);
-
-                return response.generateResponse("Save device token successfully", HttpStatus.OK, users);
-
-            }
+            users.setTokenDevice(body.get("fcm_token"));
+            userService.updateUser(users);
+//            if (users.getTokenDevice()==null || users.getTokenDevice()==""|| users.getTokenDevice()!=body.get("fcm_token")){
+//                users.setTokenDevice(body.get("fcm_token"));
+//                userService.updateUser(users);
+//
+//                return response.generateResponse("Save device token successfully", HttpStatus.OK, users);
+//            }
+//
+//            List<User> list = userService.getAllUsers();
+//
+//            for (int i = 0; i < list.size(); i++) {
+//
+//                if (users.getTokenDevice()==list.get(i).getTokenDevice()){
+//                    return response.generateResponse("Device token is exsit", HttpStatus.BAD_REQUEST, users);
+//                }
+//                users.setTokenDevice(body.get("fcm_token"));
+//                userService.updateUser(users);
+//
+//                return response.generateResponse("Save device token successfully", HttpStatus.OK, users);
+//
+//            }
             return response.generateResponse("Save device token successfully", HttpStatus.OK, users);
 
         } catch (Exception e) {
@@ -195,10 +197,10 @@ public class UserController {
             @PathVariable long id
     ) {
         try {
-            if(userService.checkDeleteUser(id) == 0) {
-                return response.generateResponse("Tài khoản đã không thể xóa !", HttpStatus.OK, null);
-
-            }
+//            if(userService.checkDeleteUser(id) == 0) {
+//                return response.generateResponse("Tài khoản đã không thể xóa !", HttpStatus.OK, null);
+//
+//            }
             User users = userService.updateStatusUser(id);
             return response.generateResponse("remove user Successfully", HttpStatus.OK, users);
         } catch (Exception e) {

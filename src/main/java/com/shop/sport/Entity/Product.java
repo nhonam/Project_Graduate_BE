@@ -42,6 +42,10 @@ public class Product {
     @Column(name = "public_id")
     private String publicId;
 
+
+    @Column(name = "is_delete")
+    private Boolean isDelete;
+
     @Column(name = "status")
     private Boolean status;
 
