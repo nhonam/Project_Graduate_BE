@@ -40,34 +40,34 @@ public class CategoryController {
 
     }
 
-    @GetMapping("/update/{id}")
+    @PostMapping("/update/{id}")
     public ResponseEntity<Object> updateCategory(
             @PathVariable long id,
-            @RequestParam(value="name", required = false) String name,
+            @RequestParam(value="name", required = true) String name,
             @RequestParam(value="image", required = false) MultipartFile file
     ) {
 
         try {
             Category category = categoryService.findById(id).get();
-            if (category != null){
+            category.setCategoryName(name);
 
-                if (!name.isEmpty()){
-                    category.setCategoryName(name);
-                }
+            if (file != null){
 
-                if (!file.isEmpty()) {
+
                     fileUpload.deleteFile(category.getPublicId());
 
                     Map<String, String> upload = fileUpload.uploadFile(file);
 
                     category.setImageUrl(upload.get("url"));
                     category.setPublicId(upload.get("public_id"));
-                }
+
+
+                category = categoryService.createCategory(category);
 
                 return response.generateResponse("update category Successfully", HttpStatus.OK, category);
             }
-
-            return response.generateResponse("update category failed", HttpStatus.BAD_REQUEST, category);
+            category = categoryService.createCategory(category);
+            return response.generateResponse("update category Successfully", HttpStatus.OK, category);
         } catch (Exception e) {
             return response.generateResponse("update category failed"+e.getMessage(), HttpStatus.BAD_REQUEST, null);
         }
@@ -120,6 +120,27 @@ public class CategoryController {
             fileUpload.deleteFile(public_id);
             return response.generateResponse("createCategory fail"+e.getMessage(), HttpStatus.BAD_REQUEST, null);
         }
+    }
+
+
+    @DeleteMapping("/categorys/{id}")
+    public ResponseEntity<Object> deleteCategory(
+            @PathVariable long id
+    ) {
+        try {
+
+            //check delete branhd
+            if (!categoryService.checkdelete(id)){
+                return response.generateResponse("không thể xóa", HttpStatus.BAD_REQUEST, false);
+            }
+
+            if (!categoryService.delete_category(id))
+                return response.generateResponse("Delete brands fail", HttpStatus.BAD_REQUEST, false);
+            return response.generateResponse("Delete brands Successfully", HttpStatus.OK, true);
+        } catch (Exception e) {
+            return response.generateResponse("Delete brands fail" + e.getMessage(), HttpStatus.BAD_REQUEST, null);
+        }
+
     }
 
 

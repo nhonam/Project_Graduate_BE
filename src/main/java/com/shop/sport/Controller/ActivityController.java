@@ -83,8 +83,13 @@ public class ActivityController {
             @PathVariable long id
     ) {
         try {
+
+            if (!activityService.check_delete_activity(id)){
+                return response.generateResponse("không thể xóa", HttpStatus.BAD_REQUEST, false);
+            }
+
             if (!activityService.deleteActivity(id))
-                return response.generateResponse("Delete activities fail", HttpStatus.BAD_REQUEST, false);
+                return response.generateResponse("không thể xóa", HttpStatus.BAD_REQUEST, false);
             return response.generateResponse("Delete activities Successfully", HttpStatus.OK, true);
         } catch (Exception e) {
             return response.generateResponse("Delete activities fail" + e.getMessage(), HttpStatus.BAD_REQUEST, null);

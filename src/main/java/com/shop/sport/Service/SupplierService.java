@@ -21,6 +21,12 @@ public class SupplierService {
         return false;
     }
 
+    public Boolean check_delete_suplier(long id) {
+        if (iBrandRepository.check_delete_suplier( id) ==1 )
+            return true;
+        return false;
+    }
+
     public Supplier findById(long id) {
         Optional<Supplier> environment = iBrandRepository.findById(id);
         if (environment.isEmpty())

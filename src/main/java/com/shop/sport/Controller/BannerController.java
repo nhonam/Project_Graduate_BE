@@ -29,6 +29,26 @@ public class BannerController {
     @Autowired
     private FileUpload fileUpload;
 
+    @DeleteMapping("/banners/{id}")
+    public ResponseEntity<Object> deletebrands(
+            @PathVariable long id
+    ) {
+        try {
+
+            //check delete branhd
+            if (!bannerService.check_delete_banner(id)){
+                return response.generateResponse("không thể xóa", HttpStatus.BAD_REQUEST, false);
+            }
+
+            if (!bannerService.delete_Banner(id))
+                return response.generateResponse("Delete brands fail", HttpStatus.BAD_REQUEST, false);
+            return response.generateResponse("Delete brands Successfully", HttpStatus.OK, true);
+        } catch (Exception e) {
+            return response.generateResponse("Delete brands fail" + e.getMessage(), HttpStatus.BAD_REQUEST, null);
+        }
+
+    }
+
     @GetMapping("/five")
     public ResponseEntity<Object> getFiveCategory() {
 

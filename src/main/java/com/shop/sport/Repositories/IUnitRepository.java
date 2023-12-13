@@ -19,6 +19,10 @@ public interface IUnitRepository extends CrudRepository<Unit, Long> {
     Long isExsitUnit(@Param("unit_name") String unit_name);
 
 
+    @Query(value = "CALL check_delete_unit(:id);", nativeQuery = true)
+    int check_delete_unit(@Param("id") long id);
+
+
     @Query(value = "CALL ThongKeSoLuongSanPhamBanRa(:year);", nativeQuery = true)
     String ThongKeSoLuongSanPhamBanRa(@Param("year") int year);
 

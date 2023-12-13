@@ -13,6 +13,9 @@ public interface ISupplierRepository extends CrudRepository<Supplier, Long> {
     @Query(value = "CALL is_exsit_supplier(:supplier);", nativeQuery = true)
     Long isExsitSupplier(@Param("supplier") String supplier);
 
+    @Query(value = "CALL check_delete_suplier(:id);", nativeQuery = true)
+    int check_delete_suplier(@Param("id") long id);
+
 
 
 }

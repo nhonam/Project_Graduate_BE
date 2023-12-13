@@ -20,6 +20,10 @@ public class BrandService {
         return false;
     }
 
+    public Boolean check_delete_brand(long id) {
+        return iBrandRepository.check_delete_brand(id) == 1;
+    }
+
     public Brand findById(long id) {
         Optional<Brand> environment = iBrandRepository.findById(id);
         if (environment.isEmpty())

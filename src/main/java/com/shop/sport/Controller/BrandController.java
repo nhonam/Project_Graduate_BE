@@ -74,6 +74,12 @@ public class BrandController {
             @PathVariable long id
     ) {
         try {
+
+            //check delete branhd
+            if (!brandService.check_delete_brand(id)){
+                return response.generateResponse("không thể xóa", HttpStatus.BAD_REQUEST, false);
+            }
+
             if (!brandService.delete(id))
                 return response.generateResponse("Delete brands fail", HttpStatus.BAD_REQUEST, false);
             return response.generateResponse("Delete brands Successfully", HttpStatus.OK, true);

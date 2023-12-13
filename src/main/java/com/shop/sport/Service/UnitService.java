@@ -23,6 +23,10 @@ public class UnitService {
         return false;
     }
 
+    public Boolean check_delete_unit(long id) {
+        return iUnitRepository.check_delete_unit(id) == 1;
+    }
+
     public Unit findById(long id) {
         Optional<Unit> environment = iUnitRepository.findById(id);
         if (environment.isEmpty())

@@ -19,6 +19,10 @@ public class ActivityService {
         return false;
     }
 
+    public Boolean check_delete_activity(long id) {
+        return iActivityRepository.check_delete_activity(id) == 1;
+    }
+
     public Activity findById(long id) {
         Optional<Activity> environment = iActivityRepository.findById(id);
         if (environment.isEmpty())

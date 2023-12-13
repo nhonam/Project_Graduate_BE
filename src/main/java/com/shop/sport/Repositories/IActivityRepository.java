@@ -13,4 +13,6 @@ public interface IActivityRepository extends CrudRepository<Activity, Long> {
     Long isExsitActivity(@Param("activity_name") String activity_name);
 
 
+    @Query(value = "CALL check_delete_activity(:id);", nativeQuery = true)
+    int check_delete_activity(@Param("id") long id);
 }

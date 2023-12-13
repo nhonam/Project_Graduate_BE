@@ -74,6 +74,12 @@ public class UnitController {
             @PathVariable long id
     ) {
         try {
+
+            if(!unitService.check_delete_unit(id)) {
+                return response.generateResponse("không thể xóa", HttpStatus.BAD_REQUEST, false);
+
+            }
+
             if (!unitService.deleteUnit(id))
                 return response.generateResponse("Delete units fail", HttpStatus.BAD_REQUEST, false);
             return response.generateResponse("Delete units Successfully", HttpStatus.OK, true);

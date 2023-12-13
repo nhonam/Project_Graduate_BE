@@ -74,6 +74,15 @@ public class SupplierController {
             @PathVariable long id
     ) {
         try {
+
+
+//            ==1 có thể xóa
+
+            if (!supplierService.check_delete_suplier(id)) {
+                return response.generateResponse("không thể xóa", HttpStatus.BAD_REQUEST, false);
+
+            }
+
             if (!supplierService.delete(id))
                 return response.generateResponse("Delete suppliers fail", HttpStatus.BAD_REQUEST, false);
             return response.generateResponse("Delete suppliers Successfully", HttpStatus.OK, true);

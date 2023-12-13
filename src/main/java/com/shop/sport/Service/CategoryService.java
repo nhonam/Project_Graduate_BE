@@ -22,6 +22,23 @@ public class CategoryService {
         return false;
     }
 
+    public Boolean checkdelete(long id) {
+        // có thể xóa
+        return iCategoryRepository.check_delete_category(id) == 1;
+    }
+
+    public Boolean delete_category(long id) {
+        try {
+            iCategoryRepository.deleteById(id);
+            return true;
+
+        }catch (Exception e) {
+            return false;
+        }
+
+
+    }
+
     public void delete(long id) {
         iCategoryRepository.deleteById(id);
     }

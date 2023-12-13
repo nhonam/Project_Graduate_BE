@@ -11,4 +11,9 @@ public interface ICategoryRepository extends CrudRepository<Category, Long> {
     Long is_exsit_category(@Param("name") String name);
 
 
+    @Query(value = "CALL check_delete_category(:id);", nativeQuery = true)
+    int check_delete_category(@Param("id") long id);
+
+
+
 }

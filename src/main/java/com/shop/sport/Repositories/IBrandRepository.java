@@ -14,5 +14,9 @@ public interface IBrandRepository extends CrudRepository<Brand, Long> {
     Long isExsitBrand(@Param("name") String name);
 
 
+    @Query(value = "CALL check_delete_brand(:id);", nativeQuery = true)
+    int check_delete_brand(@Param("id") long id);
+
+
 
 }

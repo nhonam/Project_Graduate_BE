@@ -13,8 +13,21 @@ import java.util.Optional;
 public class BannerService {
     @Autowired
     private IBannerRepository iBannerRepository;
+    public Boolean check_delete_banner(long id) {
+        return iBannerRepository.check_delete_banner() == 1;
+    }
+
+    public Boolean delete_Banner(long id) {
+        try {
+            iBannerRepository.deleteById(id);
+            return true;
+
+        }catch (Exception e) {
+            return false;
+        }
 
 
+    }
     public void delete(long id) {
         iBannerRepository.deleteById(id);
     }
