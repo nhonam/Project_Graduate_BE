@@ -28,6 +28,12 @@ public class EnvironmentService {
         return false;
     }
 
+    public Boolean checkdelete(long id) {
+        if (iBrandRepository.check_delete_environment(id) ==1) // có thể xóa
+            return true;
+        return false;
+    }
+
     public Boolean isExsit(long id) {
         if (iBrandRepository.findById(id).isEmpty())
             return false;

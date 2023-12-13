@@ -42,6 +42,12 @@ public class Order1 {
     @JsonIgnore
     @JoinColumn(name = "id_User") // // thông qua khóa ngoại id
     private User user;// đơn hàng của user nào ?
+
+
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "id_employee") // // thông qua khóa ngoại id
+    private User employee;// đơn hàng của user nào ?
 //
 //
     @ManyToOne

@@ -51,17 +51,38 @@ public class OrderController {
         try {
 
             long idUser = Long.parseLong(body.get("id_user"));
-          int result =   orderService.insertOrder(idUser,
+            int result = orderService.insertOrder(idUser,
                     body.get("adress"), body.get("phone"), body.get("ten_ng_nhan"),
-                     body.get("idProducts"),body.get("idQuantities"));
+                    body.get("idProducts"), body.get("idQuantities"));
 
-          if (result==1)
+            if (result == 1)
                 return response.generateResponse("Buy product Successfully", HttpStatus.OK, true);
-          return response.generateResponse("Buy product fail producer return 0 -> fail transaction", HttpStatus.BAD_REQUEST, null);
+            return response.generateResponse("hết hàng trong kho", HttpStatus.OK, false);
 
 
-        }catch (Exception e) {
-            return response.generateResponse("Buy product fail"+e.getMessage(), HttpStatus.BAD_REQUEST, null);
+        } catch (Exception e) {
+            return response.generateResponse("Buy product fail" + e.getMessage(), HttpStatus.OK, false);
+
+        }
+    }
+
+
+    @PostMapping("/all-order/{id}")
+    public ResponseEntity<Object> getOrderByIDUser(
+            @PathVariable("id")  long id_user,
+            @RequestBody Map<String, String> body
+
+
+    ) {
+        try {
+
+            List<Order1> list = orderService.get_order_by_date_by_id_user(body.get("date_start"),
+                    body.get("date_end"), id_user);
+
+            return response.generateResponse("get list order by id user Successfully", HttpStatus.OK, list);
+
+        } catch (Exception e) {
+            return response.generateResponse("get list order item failed" + e.getMessage(), HttpStatus.OK, 0);
 
         }
     }

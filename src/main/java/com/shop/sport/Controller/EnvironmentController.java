@@ -74,6 +74,10 @@ public class EnvironmentController {
             @PathVariable long id
     ) {
         try {
+            if (!environmentService.checkdelete(id)){
+                return response.generateResponse("không thể xóa", HttpStatus.BAD_REQUEST, false);
+            }
+
             if (!environmentService.delete(id))
                 return response.generateResponse("Delete environment fail", HttpStatus.BAD_REQUEST, false);
             return response.generateResponse("Delete environment Successfully", HttpStatus.OK, true);

@@ -67,17 +67,23 @@ public class OrderService {
     }
     public List<Order1> getAllOrder() {
         return (List<Order1>) orderReopository.findAll();
-
     }
 
     public List<Order1> getAllOrderByDate(String start, String end) {
         return (List<Order1>) orderReopository.get_order_by_date(start, end);
 
     }
+
+    public List<Order1> get_order_by_date_by_id_user(String start, String end, long id) {
+        return (List<Order1>) orderReopository.get_order_by_date_by_id_user(start, end, id);
+
+    }
     public List<OrderDTO> getAllOrderByEmployee() {
         return orderReopository.get_all_order_by_employee();
 
     }
+
+
 
     public List<OrderDTO> getOrder_byIdUserNotValuate(long idUser) {
         return orderReopository.getOrder_byIdUser_evaluate(idUser);

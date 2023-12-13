@@ -55,6 +55,10 @@ public class User implements UserDetails {
   @JsonIgnore
   private Collection<Order1> orders;
 
+  @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+  @JsonIgnore
+  private Collection<Order1> donHang;
+
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
   @JsonIgnore
   private Collection<ImportProduct> importProducts;

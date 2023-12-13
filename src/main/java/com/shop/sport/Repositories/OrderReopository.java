@@ -41,6 +41,9 @@ public interface OrderReopository extends CrudRepository<Order1, Long> {
     @Query(value = "CALL get_all_order_by_employee()", nativeQuery = true)
     List<OrderDTO> get_all_order_by_employee();
 
+    @Query(value = "CALL get_order_by_id_user(:id_user)", nativeQuery = true)
+    List<Order1> get_order_by_id_user(@Param("id_user") long id_user);
+
     @Query(value = "CALL best_sell_month(:thang, :nam)", nativeQuery = true)
     List<BestSell> best_sell_month(@Param("thang") int thang,
                                    @Param("nam") int nam);
@@ -51,6 +54,12 @@ public interface OrderReopository extends CrudRepository<Order1, Long> {
     @Query(value = "CALL get_order_by_date(:start,:end)", nativeQuery = true)
     List<Order1> get_order_by_date(@Param("start") String start,
                                    @Param("end") String end);
+
+    @Query(value = "CALL get_order_by_date_by_id_user(:start,:end,:id_user)", nativeQuery = true)
+    List<Order1> get_order_by_date_by_id_user(@Param("start") String start,
+                                   @Param("end") String end,
+                                   @Param("id_user") long id_user
+    );
 
     @Query(value = "CALL delete_order(:idorder);", nativeQuery = true)
     Long delete_order(@Param("idorder") long idorder);

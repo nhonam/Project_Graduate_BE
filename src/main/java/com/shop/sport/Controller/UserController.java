@@ -197,10 +197,10 @@ public class UserController {
             @PathVariable long id
     ) {
         try {
-//            if(userService.checkDeleteUser(id) == 0) {
-//                return response.generateResponse("Tài khoản đã không thể xóa !", HttpStatus.OK, null);
-//
-//            }
+            if(userService.checkDeleteUser(id) == 0) {
+                return response.generateResponse("Tài khoản đã không thể xóa !", HttpStatus.OK, null);
+
+            }
             User users = userService.updateStatusUser(id);
             return response.generateResponse("remove user Successfully", HttpStatus.OK, users);
         } catch (Exception e) {

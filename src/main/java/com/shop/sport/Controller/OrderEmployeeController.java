@@ -1,15 +1,14 @@
 package com.shop.sport.Controller;
 
 import com.shop.sport.DTO.*;
-import com.shop.sport.Entity.Order1;
-import com.shop.sport.Entity.OrderItem;
-import com.shop.sport.Entity.OrderStatus;
-import com.shop.sport.Entity.User;
+import com.shop.sport.DTO.ImportProductDetail;
+import com.shop.sport.Entity.*;
 import com.shop.sport.MailService.EmailDetails;
 import com.shop.sport.MailService.EmailService;
 import com.shop.sport.Response.Response;
 import com.shop.sport.Service.OrderService;
 import com.shop.sport.Service.OrderStatusService;
+import com.shop.sport.Service.ProductService;
 import com.shop.sport.Service.UserService;
 import com.shop.sport.Utils.PushNoti.FirebaseMessageService;
 import com.shop.sport.Utils.PushNoti.Notification;
@@ -41,6 +40,9 @@ public class OrderEmployeeController {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private ProductService productService;
 
     @Autowired
     private UserService userService;
@@ -196,23 +198,23 @@ public class OrderEmployeeController {
         }
     }
 
-    @GetMapping("/cancel-order/{id}")
-    public ResponseEntity<Object> deleteOrder(
-            @PathVariable long id
-    ) {
-
-        try {
-
-
-            Order1 order = orderService.findByID(id);
-            order.setOrderStatus(orderStatusService.findOrderStatusById(5)); // 5 là id của CANCEL trong bảng order_status
-            orderService.saveToDB(order);
-            return response.generateResponse("cancel order successfully", HttpStatus.OK, 1);
-        } catch (Exception e) {
-            return response.generateResponse("cancel order failed" + e.getMessage(), HttpStatus.OK, null);
-
-        }
-    }
+//    @GetMapping("/cancel-order/{id}")
+//    public ResponseEntity<Object> deleteOrder(
+//            @PathVariable long id
+//    ) {
+//
+//        try {
+//
+//
+//            Order1 order = orderService.findByID(id);
+//            order.setOrderStatus(orderStatusService.findOrderStatusById(5)); // 5 là id của CANCEL trong bảng order_status
+//            orderService.saveToDB(order);
+//            return response.generateResponse("cancel order successfully", HttpStatus.OK, 1);
+//        } catch (Exception e) {
+//            return response.generateResponse("cancel order failed" + e.getMessage(), HttpStatus.OK, null);
+//
+//        }
+//    }
 
     @PostMapping("/update-status-order/{id}")
     public ResponseEntity<Object> UpdateStatusOrder(
@@ -226,9 +228,23 @@ public class OrderEmployeeController {
 
             //đơn hàng chờ xác nhận mới có thể hủy
             if (order.getOrderStatus().getId() == 1 && idStatusOrder == 5) {
-                OrderStatus orderStatus = orderStatusService.findOrderStatusById(idStatusOrder);
-                order.setOrderStatus(orderStatus); // 5 là id của CANCEL trong bảng order_status
-                
+//                Order1 order = orderService.findByID(id);
+                order.setOrderStatus(orderStatusService.findOrderStatusById(5)); // 5 là id của CANCEL trong bảng order_status
+
+
+                List<OrderItem> list = order.getOrderItems().stream().toList();
+                Product product ;
+
+                for (int i = 0; i< list.size(); i++) {
+                    product = list.get(i).getProduct();
+                    int quantityCurrent = product.getStockQuantity();
+
+                    product.setStockQuantity((int) (quantityCurrent+ list.get(i).getQuantity()));
+                    productService.createProduct(product);
+
+                }
+
+
                 orderService.saveToDB(order);
                 return response.generateResponse("Hủy đơn hàng thành công", HttpStatus.OK, order);
             }
@@ -253,6 +269,10 @@ public class OrderEmployeeController {
                 String formattedDate = currentDate.format(formatter);
                 order.setPaymentDate(Date.valueOf(formattedDate));
                 OrderStatus orderStatus = orderStatusService.findOrderStatusById(idStatusOrder);
+
+                User employee = userService.getUserById(Long.valueOf(body.get("id_user")));
+                order.setEmployee(employee);
+
                 order.setOrderStatus(orderStatus);
                 orderService.saveToDB(order);
 
@@ -266,14 +286,13 @@ public class OrderEmployeeController {
                     Boolean status
                             = emailService.sendSimpleMail(details);
                     ;
+                    return response.generateResponse("1", HttpStatus.OK, order);
 
 
                 } catch (Exception e) {
+                    return response.generateResponse("1", HttpStatus.OK, order);
+
                 }
-
-
-
-                return response.generateResponse("1", HttpStatus.OK, order);
 
             }
             OrderStatus orderStatus = orderStatusService.findOrderStatusById(idStatusOrder);
